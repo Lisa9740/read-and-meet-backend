@@ -2,7 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Auth\UserAuthController;
+use App\Http\Controllers\API\Auth\UserAuthController;
+use App\Http\Controllers\API\BookPostController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -18,7 +19,9 @@ use App\Http\Controllers\Auth\UserAuthController;
     return $request->user();
 });*/
 
-Route::post('register', [UserAuthController::class, 'register']);
-Route::post('login', [UserAuthController::class, 'login']);
-/*  Inscription */
+Route::post('/register', [UserAuthController::class, 'register']) ;
+Route::post('/connexion', [UserAuthController::class, 'login'])->name('login');
 
+Route::middleware('auth:api')->group( function () {
+    Route::resource('posts', BookPostController::class);
+});

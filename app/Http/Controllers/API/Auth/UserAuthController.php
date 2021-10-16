@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers\API\Auth;
 
-use App\Http\Controllers\Controller;
-use App\Models\User;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Controllers\API\BaseController as BaseController;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class UserAuthController extends Controller
 {
@@ -39,10 +41,41 @@ class UserAuthController extends Controller
 
         if (auth()->attempt($data)) {
             $token = auth()->user()->createToken('LaravelAuthApp')->accessToken;
-            return response()->json(['token' => $token], 200);
+            return response()->json(['token' => $token,  'valid' => auth()->check()], 200);
         } else {
             return response()->json(['error' => 'Unauthorised'], 401);
         }
+    }
 
+    /**
+     * Handle disconnect request.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function logout()
+    {
+        Auth::user()->tokens->each(function ($token, $key) {
+            $token->delete();
+        });
+        return response()->json([
+            'success' => true,
+            "message" => "Vous êtes déconnecté !",
+        ]);
+    }
+
+
+    /**
+     * Check token validity
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function verifyToken()
+    {
+        $loggedUser   = Auth::user();
+        if($loggedUser) {
+            return response()->json(['isTokenValid' => true]);
+        } else {
+            return response()->json(['isTokenValid' => false]);
+        }
     }
 }
