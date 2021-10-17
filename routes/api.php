@@ -21,6 +21,8 @@ use App\Http\Controllers\API\BookPostController;
 
 Route::post('/register', [UserAuthController::class, 'register']) ;
 Route::post('/connexion', [UserAuthController::class, 'login'])->name('login');
+Route::get('/authorization', [UserAuthController::class, 'verifyToken'])->name('authorization');
+Route::get('/logout', [UserAuthController::class, 'logout'])->middleware('auth:api')->name('api.logout');
 
 Route::middleware('auth:api')->group( function () {
     Route::resource('posts', BookPostController::class);

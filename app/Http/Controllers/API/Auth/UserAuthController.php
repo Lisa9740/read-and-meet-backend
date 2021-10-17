@@ -47,16 +47,19 @@ class UserAuthController extends Controller
         }
     }
 
+
     /**
      * Handle disconnect request.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function logout()
+    public function logout(): \Illuminate\Http\JsonResponse
     {
-        Auth::user()->tokens->each(function ($token, $key) {
+
+       Auth::user()->tokens->each(function ($token, $key) {
             $token->delete();
         });
+
         return response()->json([
             'success' => true,
             "message" => "Vous êtes déconnecté !",
@@ -67,15 +70,17 @@ class UserAuthController extends Controller
     /**
      * Check token validity
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function verifyToken()
+    public function verifyToken(): \Illuminate\Http\JsonResponse
     {
         $loggedUser   = Auth::user();
-        if($loggedUser) {
-            return response()->json(['isTokenValid' => true]);
-        } else {
-            return response()->json(['isTokenValid' => false]);
+        if(!$loggedUser) {
+            return response()->json("Not Authenticated", 401);
         }
     }
+
+
+
+
 }
