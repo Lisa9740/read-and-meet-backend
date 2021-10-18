@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Models\Book;
 use Illuminate\Http\Request;
 use App\Http\Controllers\API\BaseController as BaseController;
 use App\Models\BookPost;
@@ -33,17 +34,29 @@ class BookPostController extends BaseController
 
         $validator = Validator::make($input, [
             'title' => 'required',
-            'description' => 'required'
+            'description' => 'required',
+            'bookTitle' => 'required',
+            'bookDescription' => 'required',
+            'isbnNumber' => 'required',
+            'bookAuthor' => 'required',
         ]);
 
         if($validator->fails()){
             return $this->sendError('Validation Error.', $validator->errors());
         }
 
+        $book = Book::create([
+            'title' => $request->get('bookTitle'),
+            'short_description' => $request->get('bookDescription'),
+            'isbn_number' => $request->get('isbnNumber'),
+            'author' => $request->get('bookAuthor'),
+        ]);
+
         $post = BookPost::create([
             'title'          => $request->get('title'),
             'description'    => $request->get('description'),
-            'user_id'        => Auth::id()
+            'user_id'        => Auth::id(),
+            'book_id'       => $book->id
         ]);
 
         return $this->sendResponse(new BookPostResource($post), 'Book Post created successfully.');
