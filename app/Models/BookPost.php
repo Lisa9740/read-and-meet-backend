@@ -10,7 +10,7 @@ class BookPost extends Model
 {
     use HasFactory;
 
-    protected $table = 'bookPost';
+    protected $table = 'bookpost';
     protected $fillable = ['title','description','user_id'];
 
 /*    public function users()

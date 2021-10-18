@@ -18,9 +18,8 @@ class BookPostController extends BaseController
      */
     public function index()
     {
-        $posts = auth()->user()->bookPosts;
-
-        return $this->sendResponse(BookPostResource::collection($posts), 'Book Post retrieved successfully.');
+        $posts = BookPost::all();
+        return $this->sendResponse(BookPostResource::collection($posts), 'Book Posts retrieved successfully.');
     }
     /**
      * Store a newly created resource in storage.
@@ -41,7 +40,11 @@ class BookPostController extends BaseController
             return $this->sendError('Validation Error.', $validator->errors());
         }
 
-        $post = BookPost::create(['title' => $request->get('title'),'description' => $request->get('description'), "user_id" => Auth::id() ]);
+        $post = BookPost::create([
+            'title'          => $request->get('title'),
+            'description'    => $request->get('description'),
+            'user_id'        => Auth::id()
+        ]);
 
         return $this->sendResponse(new BookPostResource($post), 'Book Post created successfully.');
     }
@@ -70,7 +73,7 @@ class BookPostController extends BaseController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, BookPost $post)
+    public function update(Request $request, $id)
     {
         $input = $request->all();
 
@@ -83,10 +86,27 @@ class BookPostController extends BaseController
             return $this->sendError('Validation Error.', $validator->errors());
         }
 
+        $post  = BookPost::find($id);
         $post->title = $input['title'];
-        $post->description = $input['descrption'];
+        $post->description = $input['description'];
+        $post->user_id = Auth::id();
         $post->save();
 
         return $this->sendResponse(new BookPostResource($post), 'Post updated successfully.');
     }
+
+    /**
+     * Remove the specified resource from storage.
+    *
+    * @param  int  $id
+    * @return \Illuminate\Http\Response
+    */
+    public function destroy($id)
+    {
+        $post = BookPost::findOrFail($id);
+        $post->delete();
+
+        return $this->sendResponse(null, 'Post deleted successfully.');
+    }
+
 }
