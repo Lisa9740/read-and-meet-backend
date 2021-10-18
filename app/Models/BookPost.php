@@ -11,7 +11,8 @@ class BookPost extends Model
     use HasFactory;
 
     protected $table = 'bookpost';
-    protected $fillable = ['title','description','user_id'];
+    protected $fillable = ['title','description','user_id', 'book_id'];
+
 
 /*    public function users()
     {
