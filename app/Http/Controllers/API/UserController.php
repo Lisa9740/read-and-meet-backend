@@ -63,6 +63,7 @@ class UserController extends BaseController
         $user =  auth()->user();
 
         $validator['name'] != null ? $user->name = $validator['name'] : null;
+        $validator['user_picture'] != null ? $user->name = $validator['user_picture'] : null;
         $user->save();
         return new UserResource($user);
     }

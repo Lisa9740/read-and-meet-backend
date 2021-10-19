@@ -124,5 +124,4 @@ class BookPostController extends BaseController
             'author' => $request->get('bookAuthor'),
         ]);
     }
-
 }

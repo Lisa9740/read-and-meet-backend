@@ -23,6 +23,7 @@ class UserSeeder extends Seeder
             $user->name         = $faker->firstName();
             $user->email        = $faker->email();
             $user->password     = Hash::make('password');
+            $user->user_picture = $faker->imageUrl();
             $user->save();
         }
 
