@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\Auth\UserAuthController;
 use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\BookPostController;
+use App\Http\Controllers\API\BookController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -16,9 +17,6 @@ use App\Http\Controllers\API\BookPostController;
 |
 */
 
-/*Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});*/
 
 Route::post('/register', [UserAuthController::class, 'register']) ;
 Route::post('/connexion', [UserAuthController::class, 'login'])->name('login');
@@ -43,7 +41,14 @@ Route::middleware(['auth:api'])->prefix('post')->group(function () {
     Route::post('/delete/{id}', [BookPostController::class, 'destroy'])->name('api.post.delete');
 });
 
+Route::get('/books', [BookController::class, 'index'])->name('api.books');
+Route::middleware(['auth:api'])->prefix('book')->group(function () {
+    Route::get('/{id}', [BookController::class, 'show'])->where('id', "[0-9]+");
+    Route::post('/create', [BookController::class, 'store'])->name('api.book.create');
 
-Route::middleware('auth:api')->group( function () {
-    Route::resource('posts', BookPostController::class);
 });
+
+
+//Route::middleware('auth:api')->group( function () {
+//    Route::resource('posts', BookPostController::class);
+//});

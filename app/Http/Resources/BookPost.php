@@ -15,10 +15,12 @@ class BookPost extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
-            'description' => $this->description,
-            'created_at' => $this->created_at->format('d/m/Y'),
-            'updated_at' => $this->updated_at->format('d/m/Y'),
+            'id'            => $this->id,
+            'book'          => new BookResource($this->book),
+            'user_id'       => $this->user_id,
+            'description'   => $this->description,
+            'created_at'    => $this->created_at->format('d/m/Y'),
+            'updated_at'    => $this->updated_at->format('d/m/Y'),
         ];
     }
 }
