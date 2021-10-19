@@ -24,6 +24,8 @@ class UserSeeder extends Seeder
             $user->email        = $faker->email();
             $user->password     = Hash::make('password');
             $user->user_picture = $faker->imageUrl();
+            $user->gender = 'male';
+            $user->age = '24';
             $user->save();
         }
 
