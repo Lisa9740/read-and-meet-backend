@@ -39,6 +39,7 @@ class BookPostController extends BaseController
             'bookDescription' => 'required',
             'isbnNumber' => 'required',
             'bookAuthor' => 'required',
+            'is_visible' => 'required'
         ]);
 
         if($validator->fails()){
@@ -49,6 +50,7 @@ class BookPostController extends BaseController
         $post = BookPost::create([
             'title'          => $request->get('title'),
             'description'    => $request->get('description'),
+            'is_visible'     => $request->get('is_visible'),
             'user_id'        => Auth::id(),
             'book_id'        => $book->id
         ]);
@@ -82,7 +84,8 @@ class BookPostController extends BaseController
 
         $validator = Validator::make($input, [
             'title' => 'required',
-            'description' => 'required'
+            'description' => 'required',
+            'is_visible'     => $request->get('is_visible'),
         ]);
 
         if($validator->fails()){
@@ -92,6 +95,7 @@ class BookPostController extends BaseController
         $post  = BookPost::find($id);
         $post->title = $input['title'];
         $post->description = $input['description'];
+        $post->is_visible = $input['is_visible'];
         $post->user_id = Auth::id();
         $post->save();
 
