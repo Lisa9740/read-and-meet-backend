@@ -19,6 +19,7 @@ class CreateBookpostTable extends Migration
             $table->unsignedBigInteger('book_id');
             $table->text('title');
             $table->text('description');
+            $table->boolean('is_visible');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');
