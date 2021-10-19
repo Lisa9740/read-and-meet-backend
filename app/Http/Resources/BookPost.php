@@ -17,7 +17,7 @@ class BookPost extends JsonResource
         return [
             'id'            => $this->id,
             'book'          => new BookResource($this->book),
-            'user_id'       => $this->user_id,
+            'user'          => new UserResource($this->user),
             'description'   => $this->description,
             'is_visible'    => $this->is_visible,
             'created_at'    => $this->created_at->format('d/m/Y'),

@@ -13,6 +13,10 @@ class BookPost extends Model
     protected $table = 'bookpost';
     protected $fillable = ['title','description','user_id', 'book_id'];
 
+    public function user()
+    {
+        return $this->hasOne(User::class, 'id');
+    }
     public function book(){
         return $this->hasOne(Book::class, 'id');
     }
