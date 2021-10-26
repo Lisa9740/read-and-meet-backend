@@ -24,7 +24,10 @@ class CreateUsersTable extends Migration
             $table->string('age')->nullable();
             $table->rememberToken();
             $table->timestamps();
+
         });
+
+
     }
 
     /**

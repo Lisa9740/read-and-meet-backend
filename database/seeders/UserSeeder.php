@@ -29,7 +29,7 @@ class UserSeeder extends Seeder
             $user->save();
         }
 
-        \App\Models\User::factory(4)->create();
+        //\App\Models\User::factory(4)->create();
 
 
     }
