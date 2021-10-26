@@ -5,11 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Localisation extends Model
+class ContactRequest extends Model
 {
     use HasFactory;
-    protected $table = 'localisations';
 
-    protected $fillable = ['lat','lng', 'city'];
-
+    protected $fillable = ['to_user_id','from_user_id', 'accepted'];
 }
