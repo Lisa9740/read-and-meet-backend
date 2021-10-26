@@ -4,7 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\Auth\UserAuthController;
 use App\Http\Controllers\API\UserController;
-use App\Http\Controllers\API\BookPostController;
+use App\Http\Controllers\API\PostController;
 use App\Http\Controllers\API\BookController;
 /*
 |--------------------------------------------------------------------------
@@ -33,12 +33,12 @@ Route::middleware(['auth:api'])->prefix('user')->group(function () {
 });
 
 
-Route::get('/posts', [BookPostController::class, 'index'])->name('api.posts');
+Route::get('/posts', [PostController::class, 'index'])->name('api.posts');
 Route::middleware(['auth:api'])->prefix('post')->group(function () {
-    Route::get('/{id}', [BookPostController::class, 'show'])->where('id', "[0-9]+");
-    Route::post('/create', [BookPostController::class, 'store'])->name('api.post.create');
-    Route::post('/update/{id}', [BookPostController::class, 'update'])->name('api.post.update');
-    Route::post('/delete/{id}', [BookPostController::class, 'destroy'])->name('api.post.delete');
+    Route::get('/{id}', [PostController::class, 'show'])->where('id', "[0-9]+");
+    Route::post('/create', [PostController::class, 'store'])->name('api.post.create');
+    Route::post('/update/{id}', [PostController::class, 'update'])->name('api.post.update');
+    Route::post('/delete/{id}', [PostController::class, 'destroy'])->name('api.post.delete');
 });
 
 Route::get('/books', [BookController::class, 'index'])->name('api.books');

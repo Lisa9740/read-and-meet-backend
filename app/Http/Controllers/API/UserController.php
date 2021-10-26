@@ -16,9 +16,9 @@ class UserController extends BaseController
     /**
      * Display a listing of the resource.
      *
-     * @return Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function index()
+    public function index(): \Illuminate\Http\JsonResponse
     {
         $users = User::all();
         return $this->sendResponse(UserResource::collection($users), "Users retrieve successfully");

@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 
-class BookPost extends Model
+class Post extends Model
 {
     use HasFactory;
 
-    protected $table = 'bookpost';
+    protected $table = 'posts';
     protected $fillable = ['title','description','user_id', 'book_id'];
 
     public function user()

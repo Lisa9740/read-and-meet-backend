@@ -3,15 +3,15 @@
 namespace App\Http\Controllers\API;
 
 use App\Models\Book;
+use App\Models\Post;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Http\Controllers\API\BaseController as BaseController;
-use App\Models\BookPost;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Resources\BookPost as BookPostResource;
+use App\Http\Resources\PostResource as PostResource;
 
-class BookPostController extends BaseController
+class PostController extends BaseController
 {
     /**
      * Display a listing of the resource.
@@ -19,8 +19,8 @@ class BookPostController extends BaseController
      */
     public function index(): JsonResponse
     {
-        $posts = BookPost::all();
-        return $this->sendResponse(BookPostResource::collection($posts));
+        $posts = Post::all();
+        return $this->sendResponse(PostResource::collection($posts));
     }
 
     /**
@@ -47,7 +47,7 @@ class BookPostController extends BaseController
         }
 
         $book = $this->createBook($request);
-        $post = BookPost::create([
+        $post = Post::create([
             'title'          => $request->get('title'),
             'description'    => $request->get('description'),
             'is_visible'     => $request->get('is_visible'),
@@ -55,7 +55,7 @@ class BookPostController extends BaseController
             'book_id'        => $book->id
         ]);
 
-        return $this->sendResponse(new BookPostResource($post));
+        return $this->sendResponse(new PostResource($post));
     }
 
     /**
@@ -65,11 +65,11 @@ class BookPostController extends BaseController
      */
     public function show(int $id): JsonResponse
     {
-        $post = BookPost::find($id);
+        $post = Post::find($id);
         if (is_null($post)) {
-            return $this->sendError('Book Post not found.');
+            return $this->sendError('Post not found.');
         }
-        return $this->sendResponse(new BookPostResource($post));
+        return $this->sendResponse(new PostResource($post));
     }
 
     /**
@@ -92,14 +92,14 @@ class BookPostController extends BaseController
             return $this->sendError('Validation Error.', $validator->errors());
         }
 
-        $post  = BookPost::find($id);
+        $post  = Post::find($id);
         $post->title = $input['title'];
         $post->description = $input['description'];
         $post->is_visible = $input['is_visible'];
         $post->user_id = Auth::id();
         $post->save();
 
-        return $this->sendResponse(new BookPostResource($post));
+        return $this->sendResponse(new PostResource($post));
     }
 
     /**
@@ -109,7 +109,7 @@ class BookPostController extends BaseController
      */
     public function destroy(int $id): JsonResponse
     {
-        $post = BookPost::findOrFail($id);
+        $post = Post::findOrFail($id);
         $post->delete();
 
         return $this->sendResponse(null);

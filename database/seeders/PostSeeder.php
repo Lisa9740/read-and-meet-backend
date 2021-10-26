@@ -4,12 +4,13 @@ namespace Database\Seeders;
 
 use App\Models\Book;
 use App\Models\BookPost;
+use App\Models\Post;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
 
-class BookPostSeeder extends Seeder
+class PostSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -28,7 +29,7 @@ class BookPostSeeder extends Seeder
 
             $book->save();
 
-            $post               = new BookPost();
+            $post               = new Post();
             $post->title        = $faker->text('20');
             $post->description  =  $faker->text('200');
             $post->user_id      = 1;
