@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\API\Auth;
 
+use App\Models\Profile;
+use Error;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\API\BaseController as BaseController;
@@ -15,22 +17,34 @@ class UserAuthController extends Controller
      */
     public function register(Request $request): \Illuminate\Http\JsonResponse
     {
-        $this->validate($request, [
-            'name' => 'required|min:4',
-            'email' => 'required|email',
-            'password' => 'required|min:8',
-        ]);
+//        $this->validate($request, [
+//            'name' => 'required|min:4',
+//            'email' => 'required|email',
+//            'password' => 'required|min:8',
+//        ]);
 
-        $user = User::create([
-            'name'          => $request->name,
-            'email'         => $request->email,
-            'password'      => bcrypt($request->password),
-            'user_picture'  => null
-        ]);
+        try {
+            $user = User::create([
+                'name'          => $request->name,
+                'email'         => $request->email,
+                'password'      => bcrypt($request->password),
+                'user_picture'  => null
+            ]);
+            $token = null;
 
-        $token = $user->createToken('LaravelAuthApp')->accessToken;
+            Profile::create([
+                'user_id' => $user->id,
+                'description' => null,
+                'book_liked' => null,
+                'photo' => null]);
 
-        return response()->json(['token' => $token], 200);
+            $token = $user->createToken('LaravelAuthApp')->accessToken;
+            return response()->json(['token' => $token], 200);
+        } catch (error $e){
+            return response()->json(['error' => $e], 500);
+        }
+
+
     }
 
     public function login(Request $request): \Illuminate\Http\JsonResponse
@@ -76,12 +90,11 @@ class UserAuthController extends Controller
     public function verifyToken(): \Illuminate\Http\JsonResponse
     {
         $loggedUser   = Auth::user();
-        if(!$loggedUser) {
-            return response()->json("Not Authenticated", 401);
+        if($loggedUser) {
+            return response()->json("Authenticated", 401);
         }
+        return response()->json("Unauthenticated", 401);
     }
-
-
 
 
 }
