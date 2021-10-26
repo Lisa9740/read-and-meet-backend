@@ -17,6 +17,7 @@ class CreatePostTable extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('book_id');
+            $table->unsignedBigInteger('localisation_id')->nullable();
             $table->text('title');
             $table->text('description');
             $table->boolean('is_visible');
@@ -24,6 +25,7 @@ class CreatePostTable extends Migration
 
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('book_id')->references('id')->on('books');
+            $table->foreign('localisation_id')->references('id')->on('localisations');
         });
     }
 

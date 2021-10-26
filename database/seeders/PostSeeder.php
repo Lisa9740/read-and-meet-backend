@@ -29,12 +29,15 @@ class PostSeeder extends Seeder
 
             $book->save();
 
-            $post               = new Post();
-            $post->title        = $faker->text('20');
-            $post->description  =  $faker->text('200');
-            $post->user_id      = 1;
-            $post->book_id      = $book->id;
-            $post->is_visible   = true;
+            $post                  = new Post();
+            $post->title           =  $faker->text('20');
+            $post->description     =  $faker->text('200');
+            $post->user_id         = 1;
+            $post->book_id         = $book->id;
+            $post->is_visible      = true;
+            $post->localisation_id = null;
+
+
 
           //  $user->password     = Hash::make('password');
             $post->save();
