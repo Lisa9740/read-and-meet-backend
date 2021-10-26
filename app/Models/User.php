@@ -50,4 +50,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(Post::class);
     }
+
+/*    public function contacts(): \Illuminate\Database\Eloquent\Relations\MorphToMany
+    {
+        return $this->morphToMany(Contact::class, 'contacts');
+    }*/
+
+ /*   public function chats(): \Illuminate\Database\Eloquent\Relations\MorphToMany
+    {
+        return $this->morphToMany(Chat::class, 'chats');
+    }*/
 }
