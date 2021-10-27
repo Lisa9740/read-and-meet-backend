@@ -2,12 +2,9 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Resources\ContactRequestResource;
-use App\Http\Resources\PostResource as PostResource;
-use App\Http\Resources\ProfileResource;
 use App\Models\Contact;
 use App\Models\ContactRequest;
-use App\Models\Post;
+use App\Models\User;
 use App\Models\UserHasContact;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -22,7 +19,7 @@ class ContactRequestController extends BaseController
      * @param Request $request
      * @return JsonResponse
      */
-    public function store(Request $request): JsonResponse
+    public function createRequest(Request $request): JsonResponse
     {
         $input = $request->all();
 
@@ -49,57 +46,86 @@ class ContactRequestController extends BaseController
      * Display a listing of contact request to user.
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getReceivedContactRequest($id): \Illuminate\Http\JsonResponse
+    public function getReceivedContactRequest(): \Illuminate\Http\JsonResponse
     {
-        $contactRequests = DB::table('contact_requests')->where('to_user_id', 'LIKE', $id)->get();
-        return $this->sendResponse(ContactRequestResource::collection($contactRequests));
+        $contactRequests = DB::table('contact_requests')->where('to_user_id', 'LIKE', Auth::id())->get();
+
+        $list = [];
+
+        foreach ($contactRequests as $request) {
+            $list[] = [
+                'from'          => $this->getUserInfo($request->from_user_id),
+                'description' => $request->description,
+                'status'      => $request->accepted,
+            ];
+        }
+        return $this->sendResponse($list);
     }
 
     /**
      * Display a listing of contact request from user.
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getSentContactRequest($id): \Illuminate\Http\JsonResponse
+    public function getSentContactRequest(): \Illuminate\Http\JsonResponse
     {
-        $contactRequests = DB::table('contact_requests')->where('from_user_id', 'LIKE', $id)->get();
-        return $this->sendResponse(ContactRequestResource::collection($contactRequests));
+        $contactRequests = DB::table('contact_requests')->where('from_user_id', 'LIKE', Auth::id())->get();
+        $list = [];
+
+        foreach ($contactRequests as $request) {
+            $list[] = [
+                'to'          => $this->getUserInfo($request->to_user_id),
+                'description' => $request->description,
+                'status'      => $request->accepted,
+            ];
+        }
+        return $this->sendResponse($list);
     }
 
-
     /**
-     * Display a listing of contact request from user.
+     * Set contact request as accepted and then remove the contact request.
+     * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function acceptContactRequest($id, Request $request): \Illuminate\Http\JsonResponse
+    public function acceptContactRequest(Request $request): \Illuminate\Http\JsonResponse
     {
 
         $input = $request->all();
-
         $validator = Validator::make($input, [
-            'to_user_id' => 'required',
+            'request_id' => 'required',
         ]);
 
         if($validator->fails()){
             return $this->sendError('Validation Error.', $validator->errors());
         }
 
-        $contactRequest = ContactRequest::find($id);
-        $contactRequest->accepted = true;
+        $contactRequest = ContactRequest::find($input['request_id']);
 
-        $contact = Contact::create();
+        if (Auth::id() === $contactRequest->to_user_id){
+            $contactRequest->accepted = true;
+            $contact = Contact::create([]);
+            $this->createUsersContact($contact->id, $contactRequest->from_user_id);
+            $contactRequest->delete();
 
-        $userContact = UserHasContact::create([
-            'contact_id' => $contact->id,
+            return $this->sendResponse('Requête accepté');
+        }
+        return $this->sendResponse('Forbidden');
+    }
+
+    function createUsersContact($id, $fromUserId){
+        UserHasContact::create([
+            'contact_id' => $id,
             'user_id'    => Auth::id(),
         ]);
 
-        $otherUserContact = UserHasContact::create([
-            'contact_id' => $contact->id,
-            'user_id'    => $input['to_user_id'],
+       UserHasContact::create([
+            'contact_id' => $id,
+            'user_id'    => $fromUserId,
         ]);
-
-        return $this->sendResponse(new ContactRequestResource($contactRequest));
     }
 
-
+    function getUserInfo($id): array
+    {
+        $user = User::find($id);
+        return ['id' => $user->id, 'name' => $user->name, 'avatar' => $user->user_picture];
+    }
 }

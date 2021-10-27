@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\ContactController;
 use App\Http\Controllers\API\ContactRequestController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -59,10 +60,11 @@ Route::middleware(['auth:api'])->prefix('profile')->group(function () {
 
 
 Route::middleware(['auth:api'])->prefix('contact')->group(function () {
-    Route::post('/request/create', [ ContactRequestController::class, 'store']);
-    Route::get('/request/received/{id}', [ ContactRequestController::class, 'getReceivedContactRequest'])->where('id', "[0-9]+");
-    Route::get('/request/sent/{id}', [ ContactRequestController::class, 'getSentContactRequest'])->where('id', "[0-9]+");
-    Route::post('/request/accept/{id}',  [ ContactRequestController::class, 'acceptContactRequest'])->where('id', "[0-9]+");
+    Route::post('/request/create', [ ContactRequestController::class, 'createRequest']);
+    Route::get('/request/received', [ ContactRequestController::class, 'getReceivedContactRequest'])->where('id', "[0-9]+");
+    Route::get('/request/sent', [ ContactRequestController::class, 'getSentContactRequest']);
+    Route::post('/request/accept',  [ ContactRequestController::class, 'acceptContactRequest'])->where('id', "[0-9]+");
+    Route::get('/list',  [ ContactController::class, 'index']);
 
 });
 
