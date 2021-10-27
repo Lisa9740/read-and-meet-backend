@@ -36,6 +36,7 @@ class UserAuthController extends Controller
                 'user_id' => $user->id,
                 'description' => null,
                 'book_liked' => null,
+                'is_visible' =>  false,
                 'photo' => null]);
 
             $token = $user->createToken('LaravelAuthApp')->accessToken;
