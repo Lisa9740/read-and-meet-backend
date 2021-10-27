@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\Auth\UserAuthController;
+use App\Http\Controllers\API\ProfileController;
 use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\PostController;
 use App\Http\Controllers\API\BookController;
@@ -45,8 +46,16 @@ Route::get('/books', [BookController::class, 'index'])->name('api.books');
 Route::middleware(['auth:api'])->prefix('book')->group(function () {
     Route::get('/{id}', [BookController::class, 'show'])->where('id', "[0-9]+");
     Route::post('/create', [BookController::class, 'store'])->name('api.book.create');
-
 });
+
+Route::get('/profiles', [ProfileController::class, 'index'])->name('api.profiles');
+Route::middleware(['auth:api'])->prefix('profile')->group(function () {
+    Route::get('/{id}', [ProfileController::class, 'show'])->where('id', "[0-9]+");
+    Route::post('/edit/{id}', [ProfileController::class, 'edit'])->where('id', "[0-9]+");
+    Route::post('/edit/visibility/{id}', [ProfileController::class, 'changeVisibility'])->where('id', "[0-9]+");
+    Route::post('/edit/photo/{id}', [ProfileController::class, 'changePhoto'])->where('id', "[0-9]+");
+});
+
 
 
 //Route::middleware('auth:api')->group( function () {
