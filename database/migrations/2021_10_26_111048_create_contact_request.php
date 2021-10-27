@@ -17,6 +17,7 @@ class CreateContactRequest extends Migration
             $table->id();
             $table->integer('to_user_id');
             $table->integer('from_user_id');
+            $table->text('description');
             $table->boolean('accepted');
             $table->timestamps();
         });

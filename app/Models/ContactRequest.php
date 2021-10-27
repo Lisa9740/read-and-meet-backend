@@ -9,5 +9,5 @@ class ContactRequest extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['to_user_id','from_user_id', 'accepted'];
+    protected $fillable = ['to_user_id','from_user_id', 'description', 'accepted'];
 }
