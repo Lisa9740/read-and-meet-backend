@@ -23,10 +23,10 @@ class ProfileController extends BaseController
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show($id)
+    public function show(int $id)
     {
         $profile = Profile::find($id);
         if (is_null($profile)) {
@@ -39,10 +39,10 @@ class ProfileController extends BaseController
     /**
      * Changed the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function edit($id, Request $request)
+    public function edit(int $id, Request $request)
     {
         $input = $request->all();
 
@@ -68,10 +68,10 @@ class ProfileController extends BaseController
     /**
      * Changed the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function changeVisibility($id, Request $request)
+    public function changeVisibility(int $id, Request $request)
     {
         $input = $request->all();
 
@@ -95,10 +95,10 @@ class ProfileController extends BaseController
     /**
      * Changed the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function changePhoto($id, Request $request)
+    public function changePhoto(int $id, Request $request)
     {
         $input = $request->all();
 
@@ -117,6 +117,4 @@ class ProfileController extends BaseController
 
         return $this->sendResponse(new ProfileResource($profile), 'Profile retrieved successfully.');
     }
-
-
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\ContactRequestController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\Auth\UserAuthController;
@@ -55,6 +56,17 @@ Route::middleware(['auth:api'])->prefix('profile')->group(function () {
     Route::post('/edit/visibility/{id}', [ProfileController::class, 'changeVisibility'])->where('id', "[0-9]+");
     Route::post('/edit/photo/{id}', [ProfileController::class, 'changePhoto'])->where('id', "[0-9]+");
 });
+
+
+Route::middleware(['auth:api'])->prefix('contact')->group(function () {
+    Route::post('/request/create', [ ContactRequestController::class, 'store']);
+    Route::get('/request/received/{id}', [ ContactRequestController::class, 'getReceivedContactRequest'])->where('id', "[0-9]+");
+    Route::get('/request/sent/{id}', [ ContactRequestController::class, 'getSentContactRequest'])->where('id', "[0-9]+");
+    Route::post('/request/accept/{id}',  [ ContactRequestController::class, 'acceptContactRequest'])->where('id', "[0-9]+");
+
+});
+
+
 
 
 
