@@ -1,6 +1,6 @@
-### ReadAndMeet Backend
+# ReadAndMeet Backend
     
-Ceci est la partie api du projet ReadAndMeet.
+Ceci est la partie api du projet ReadAndMeet qui est faite en Lavarel.
 
 ## A propos de ReadAndMeet
 
