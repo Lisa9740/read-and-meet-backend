@@ -11,6 +11,7 @@ livre via des annonces visible sur une map.
 
 - npm install
 - composer install
+- php artisan key:generate
 - php artisan migrate
 - php artisan db:seed DatabaseSeeder
 - php artisan passport:install -> cette commande sera obligatoire à chaque migration lors du développement
