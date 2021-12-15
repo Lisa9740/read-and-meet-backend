@@ -22,6 +22,9 @@ class CreateUsersTable extends Migration
             $table->string('user_picture')->nullable();
             $table->string('gender')->nullable();
             $table->string('age')->nullable();
+
+            $table->unsignedBigInteger('profile_id');
+            $table->foreign('profile_id')->references('id')->on('profiles');
             $table->rememberToken();
             $table->timestamps();
 

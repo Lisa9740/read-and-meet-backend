@@ -18,17 +18,6 @@ class ProfileSeeder extends Seeder
     {
         $faker = \Faker\Factory::create("fr_FR");
 
-        $visibility = [true, false, true, true];
-
-        for ($i = 1; $i < 4; $i++) {
-            $user = new Profile();
-            $user->user_id      = $i;
-            $user->description  = $faker->text(50);
-            $user->book_liked   = $faker->text(10);
-            $user->photo        = $faker->imageUrl();
-            $user->is_visible   = $visibility[$i];
-            $user->save();
-        }
 
 
     }

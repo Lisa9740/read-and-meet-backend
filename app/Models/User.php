@@ -24,7 +24,8 @@ class User extends Authenticatable
         'password',
         'gender',
         'age',
-        'user_picture'
+        'user_picture',
+        'profile_id'
     ];
 
     /**
@@ -51,6 +52,9 @@ class User extends Authenticatable
         return $this->hasMany(Post::class);
     }
 
+    public function profile(){
+        return $this->hasOne(User::class, 'id');
+    }
 /*    public function contacts(): \Illuminate\Database\Eloquent\Relations\MorphToMany
     {
         return $this->morphToMany(Contact::class, 'contacts');
