@@ -29,9 +29,9 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/users', [UserController::class, 'index'])->name('api.users');
     Route::get('/posts', [PostController::class, 'index'])->name('api.posts');
     Route::get('/books', [BookController::class, 'index'])->name('api.books');
-
+    Route::get('/profiles', [ProfileController::class, 'index'])->name('api.profiles');
 });
-Route::get('/profiles', [ProfileController::class, 'index'])->name('api.profiles');
+
 Route::middleware(['auth:api'])->prefix('user')->group(function () {
     Route::get('/{id}', [UserController::class, 'show'])->where('id', "[0-9]+");
     Route::post('/update', [UserController::class, 'updateUser'])->name('api.users.update');
