@@ -24,20 +24,21 @@ class UserAuthController extends Controller
 //        ]);
 
         try {
-            $user = User::create([
-                'name'          => $request->name,
-                'email'         => $request->email,
-                'password'      => bcrypt($request->password),
-                'user_picture'  => null
-            ]);
-            $token = null;
 
-            Profile::create([
-                'user_id' => $user->id,
+            $token = null;
+            $profile = Profile::create([
                 'description' => null,
                 'book_liked' => null,
                 'is_visible' =>  false,
                 'photo' => null]);
+
+            $user = User::create([
+                'name'          => $request->name,
+                'email'         => $request->email,
+                'password'      => bcrypt($request->password),
+                'profile_id'    => $profile->id,
+                'user_picture'  => null
+            ]);
 
             $token = $user->createToken('LaravelAuthApp')->accessToken;
             return response()->json(['token' => $token], 200);
@@ -57,7 +58,7 @@ class UserAuthController extends Controller
 
         if (auth()->attempt($data)) {
             $token = auth()->user()->createToken('LaravelAuthApp')->accessToken;
-            return response()->json(['token' => $token,  'valid' => auth()->check()], 200);
+            return response()->json(['user'=> auth()->user() , 'token' => $token,  'valid' => auth()->check()], 200);
         } else {
             return response()->json(['error' => 'Unauthorised'], 401);
         }
