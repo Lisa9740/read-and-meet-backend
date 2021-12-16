@@ -19,7 +19,6 @@ jobs:
         with:
           source: "."
           target: "/var/www/html/test"
-
       - name: Executing remote command
         uses: appleboy/ssh-action@master
         with:
