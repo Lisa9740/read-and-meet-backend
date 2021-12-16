@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\API\ContactController;
 use App\Http\Controllers\API\ContactRequestController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\Auth\UserAuthController;
 use App\Http\Controllers\API\ProfileController;
@@ -26,8 +25,13 @@ Route::post('/connexion', [UserAuthController::class, 'login'])->name('login');
 Route::get('/authorization', [UserAuthController::class, 'verifyToken'])->name('authorization');
 Route::get('/logout', [UserAuthController::class, 'logout'])->middleware('auth:api')->name('api.logout');
 
+Route::middleware('auth:api')->group(function () {
+    Route::get('/users', [UserController::class, 'index'])->name('api.users');
+    Route::get('/posts', [PostController::class, 'index'])->name('api.posts');
+    Route::get('/books', [BookController::class, 'index'])->name('api.books');
+    Route::get('/profiles', [ProfileController::class, 'index'])->name('api.profiles');
+});
 
-Route::get('/users', [UserController::class, 'index'])->name('api.users');
 Route::middleware(['auth:api'])->prefix('user')->group(function () {
     Route::get('/{id}', [UserController::class, 'show'])->where('id', "[0-9]+");
     Route::post('/update', [UserController::class, 'updateUser'])->name('api.users.update');
@@ -36,7 +40,7 @@ Route::middleware(['auth:api'])->prefix('user')->group(function () {
 });
 
 
-Route::get('/posts', [PostController::class, 'index'])->name('api.posts');
+
 Route::middleware(['auth:api'])->prefix('post')->group(function () {
     Route::get('/{id}', [PostController::class, 'show'])->where('id', "[0-9]+");
     Route::post('/create', [PostController::class, 'store'])->name('api.post.create');
@@ -44,13 +48,13 @@ Route::middleware(['auth:api'])->prefix('post')->group(function () {
     Route::post('/delete/{id}', [PostController::class, 'destroy'])->name('api.post.delete');
 });
 
-Route::get('/books', [BookController::class, 'index'])->name('api.books');
+
 Route::middleware(['auth:api'])->prefix('book')->group(function () {
     Route::get('/{id}', [BookController::class, 'show'])->where('id', "[0-9]+");
     Route::post('/create', [BookController::class, 'store'])->name('api.book.create');
 });
 
-Route::get('/profiles', [ProfileController::class, 'index'])->name('api.profiles');
+
 Route::middleware(['auth:api'])->prefix('profile')->group(function () {
     Route::get('/{id}', [ProfileController::class, 'show'])->where('id', "[0-9]+");
     Route::post('/edit/{id}', [ProfileController::class, 'edit'])->where('id', "[0-9]+");
@@ -67,9 +71,6 @@ Route::middleware(['auth:api'])->prefix('contact')->group(function () {
     Route::get('/list',  [ ContactController::class, 'index']);
 
 });
-
-
-
 
 
 //Route::middleware('auth:api')->group( function () {
