@@ -17,7 +17,7 @@ class ProfileController extends BaseController
     public function index(): \Illuminate\Http\JsonResponse
     {
         $profiles = DB::table('profiles')->where('is_visible', 'LIKE', 1)->get();
-        return $this->sendResponse(ProfileResource::collection($profiles));
+        return $this->sendResponse($profiles);
     }
 
     /**
