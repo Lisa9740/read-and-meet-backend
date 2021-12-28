@@ -39,7 +39,7 @@ class ContactRequestController extends BaseController
             'accepted'          => false
         ]);
 
-        return $this->sendResponse(new ContactRequestResource($contactRequest));
+        return $this->sendResponse($contactRequest);
     }
 
     /**
