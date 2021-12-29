@@ -17,12 +17,17 @@ class UserAuthController extends Controller
      */
     public function register(Request $request): \Illuminate\Http\JsonResponse
     {
+        // todo : ajouter validation
 //        $this->validate($request, [
 //            'name' => 'required|min:4',
 //            'email' => 'required|email',
 //            'password' => 'required|min:8',
 //        ]);
 
+//        $validatedData = $request->validate([
+//            'image' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
+//
+//        ]);
         try {
 
             $token = null;
@@ -32,12 +37,15 @@ class UserAuthController extends Controller
                 'is_visible' =>  false,
                 'photo' => null]);
 
+
+            $path = $request->file('user_picture')->store('public/images');
+
             $user = User::create([
                 'name'          => $request->name,
                 'email'         => $request->email,
                 'password'      => bcrypt($request->password),
                 'profile_id'    => $profile->id,
-                'user_picture'  => null
+                'user_picture'  => $path
             ]);
 
             $token = $user->createToken('LaravelAuthApp')->accessToken;
