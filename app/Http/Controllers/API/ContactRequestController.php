@@ -84,27 +84,21 @@ class ContactRequestController extends BaseController
     /**
      * Set contact request as accepted and then remove the contact request.
      * @param Request $request
+     * @param int $id
+     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function acceptContactRequest(Request $request): \Illuminate\Http\JsonResponse
+    public function acceptContactRequest(int $id): \Illuminate\Http\JsonResponse
     {
 
-        $input = $request->all();
-        $validator = Validator::make($input, [
-            'request_id' => 'required',
-        ]);
-
-        if($validator->fails()){
-            return $this->sendError('Validation Error.', $validator->errors());
-        }
-
-        $contactRequest = ContactRequest::find($input['request_id']);
+        $contactRequest = ContactRequest::find($id);
 
         if (Auth::id() === $contactRequest->to_user_id){
             $contactRequest->accepted = true;
             $contact = Contact::create([]);
             $this->createUsersContact($contact->id, $contactRequest->from_user_id);
             $contactRequest->delete();
+            $contactRequest->save();
 
             return $this->sendResponse('Requête accepté');
         }
