@@ -68,6 +68,7 @@ Route::middleware(['auth:api'])->prefix('contact')->group(function () {
     Route::get('/request/received', [ ContactRequestController::class, 'getReceivedContactRequest'])->where('id', "[0-9]+");
     Route::get('/request/sent', [ ContactRequestController::class, 'getSentContactRequest']);
     Route::post('/request/accept/{id}',  [ ContactRequestController::class, 'acceptContactRequest'])->where('id', "[0-9]+");
+    Route::post('/request/remove/{id}',  [ ContactRequestController::class, 'removeContactRequest'])->where('id', "[0-9]+");
     Route::get('/list',  [ ContactController::class, 'index']);
 
 });

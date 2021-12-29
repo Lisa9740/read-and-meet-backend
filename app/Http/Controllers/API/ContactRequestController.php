@@ -105,6 +105,28 @@ class ContactRequestController extends BaseController
         return $this->sendResponse('Forbidden');
     }
 
+
+
+
+    /**
+     * remove the contact request
+     * @param int $id
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function removeContactRequest(int $id): \Illuminate\Http\JsonResponse
+    {
+        $contactRequest = ContactRequest::find($id);
+
+        if (Auth::id() === $contactRequest->to_user_id){
+            $contactRequest->delete();
+            $contactRequest->save();
+
+            return $this->sendResponse('Requête supprimé');
+        }
+        return $this->sendResponse('Forbidden');
+    }
+
     function createUsersContact($id, $fromUserId){
         UserHasContact::create([
             'contact_id' => $id,
