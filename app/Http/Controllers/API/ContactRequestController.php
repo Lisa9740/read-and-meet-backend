@@ -119,7 +119,7 @@ class ContactRequestController extends BaseController
         $contactRequest = ContactRequest::find($id);
 
         if (Auth::id() === $contactRequest->to_user_id){
-            $contactRequest->delete();
+            ContactRequest::destroy($id);
             $contactRequest->save();
 
             return $this->sendResponse('Requête supprimé');
