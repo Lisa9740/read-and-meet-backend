@@ -50,16 +50,16 @@ class ContactRequestController extends BaseController
     {
         $contactRequests = DB::table('contact_requests')->where('to_user_id', 'LIKE', Auth::id())->get();
 
-        $list = [];
-
-        foreach ($contactRequests as $request) {
-            $list[] = [
-                'from'          => $this->getUserInfo($request->from_user_id),
-                'description' => $request->description,
-                'status'      => $request->accepted,
-            ];
-        }
-        return $this->sendResponse($list);
+//        $list = [];
+//
+//        foreach ($contactRequests as $request) {
+//            $list[] = [
+//                'from'          => $this->getUserInfo($request->from_user_id),
+//                'description' => $request->description,
+//                'status'      => $request->accepted,
+//            ];
+//        }
+        return $this->sendResponse($contactRequests);
     }
 
     /**
