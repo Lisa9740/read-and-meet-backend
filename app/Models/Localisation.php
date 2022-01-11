@@ -10,6 +10,6 @@ class Localisation extends Model
     use HasFactory;
     protected $table = 'localisations';
 
-    protected $fillable = ['lat','lng', 'city', 'address'];
+    protected $fillable = ['lat','lng', 'city'];
 
 }
