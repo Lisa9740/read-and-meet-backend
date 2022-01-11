@@ -53,7 +53,7 @@ class PostController extends BaseController
         $post = Post::create([
             'title'          => $request->get('title'),
             'description'    => $request->get('description'),
-            'is_visible'     => $request->get('is_visible'),
+            'is_visible'     => 1,
             'user_id'        => Auth::id(),
             'book_id'        => $book->id,
             'localisation_id'=> $localisation->id
