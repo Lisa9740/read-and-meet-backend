@@ -99,7 +99,7 @@ class PostController extends BaseController
         $post  = Post::find($id);
         $post->title = $input['title'];
         $post->description = $input['description'];
-        $post->is_visible = $input['is_visible'];
+        $post->is_visible = 1;
         $post->user_id = Auth::id();
         $post->save();
 
