@@ -36,10 +36,10 @@ class PostController extends BaseController
         $validator = Validator::make($input, [
             'title' => 'required',
             'description' => 'required',
-//            'bookTitle' => 'required',
-//            'bookDescription' => 'required',
-//            'isbnNumber' => 'required',
-//            'bookAuthor' => 'required',
+            'bookTitle' => 'required',
+           'bookDescription' => 'required',
+            'isbnNumber' => 'required',
+            'bookAuthor' => 'required',
             'is_visible' => 'required'
         ]);
 
@@ -126,6 +126,7 @@ class PostController extends BaseController
             'short_description' => $request->get('bookDescription'),
             'isbn_number' => $request->get('isbnNumber'),
             'author' => $request->get('bookAuthor'),
+            'image_thumbail_url' => $request->get('image')
         ]);
     }
 
@@ -133,6 +134,7 @@ class PostController extends BaseController
         return Localisation::create([
            'lat' => $request->get('lat'),
            'lng' => $request->get('lng'),
+            'adresse' => $request->get('adresse'),
             'city' => $request->get('city')
         ]);
     }
