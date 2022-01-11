@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Models\Book;
+use App\Models\Localisation;
 use App\Models\Post;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -35,10 +36,10 @@ class PostController extends BaseController
         $validator = Validator::make($input, [
             'title' => 'required',
             'description' => 'required',
-            'bookTitle' => 'required',
-            'bookDescription' => 'required',
-            'isbnNumber' => 'required',
-            'bookAuthor' => 'required',
+//            'bookTitle' => 'required',
+//            'bookDescription' => 'required',
+//            'isbnNumber' => 'required',
+//            'bookAuthor' => 'required',
             'is_visible' => 'required'
         ]);
 
@@ -46,16 +47,19 @@ class PostController extends BaseController
             return $this->sendError('Validation Error.', $validator->errors());
         }
 
+
         $book = $this->createBook($request);
+        $localisation = $this->createPostLocalisation($request);
         $post = Post::create([
             'title'          => $request->get('title'),
             'description'    => $request->get('description'),
             'is_visible'     => $request->get('is_visible'),
             'user_id'        => Auth::id(),
-            'book_id'        => $book->id
+            'book_id'        => $book->id,
+            'localisation_id'=> $localisation->id
         ]);
 
-        return $this->sendResponse(new PostResource($post));
+        return $this->sendResponse($post);
     }
 
     /**
@@ -122,6 +126,14 @@ class PostController extends BaseController
             'short_description' => $request->get('bookDescription'),
             'isbn_number' => $request->get('isbnNumber'),
             'author' => $request->get('bookAuthor'),
+        ]);
+    }
+
+    public function createPostLocalisation(Request $request){
+        return Localisation::create([
+           'lat' => $request->get('lat'),
+           'lng' => $request->get('lng'),
+            'city' => $request->get('city')
         ]);
     }
 }
