@@ -43,9 +43,9 @@ class PostController extends BaseController
             'is_visible' => 'required'
         ]);
 
-        if($validator->fails()){
+       /* if($validator->fails()){
             return $this->sendError('Validation Error.', $validator->errors());
-        }
+        }*/
 
 
         $book = $this->createBook($request);
