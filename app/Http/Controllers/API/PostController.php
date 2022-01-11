@@ -134,7 +134,7 @@ class PostController extends BaseController
         return Localisation::create([
            'lat' => $request->get('lat'),
            'lng' => $request->get('lng'),
-            'adresse' => $request->get('adresse'),
+            'address' => $request->get('address'),
             'city' => $request->get('city')
         ]);
     }
