@@ -11,7 +11,7 @@ class Post extends Model
     use HasFactory;
 
     protected $table = 'posts';
-    protected $fillable = ['title','description','user_id', 'book_id', "localisation_id"];
+    protected $fillable = ['title','description','user_id', 'book_id', "localisation_id", "is_visible"];
 
     public function user(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
