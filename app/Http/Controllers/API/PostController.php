@@ -16,12 +16,12 @@ class PostController extends BaseController
 {
     /**
      * Display a listing of the resource.
-     * @return JsonResponse
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
-    public function index(): JsonResponse
+    public function index(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
         $posts = Post::all();
-        return $this->sendResponse(PostResource::collection($posts));
+        return PostResource::collection($posts);
     }
 
 
