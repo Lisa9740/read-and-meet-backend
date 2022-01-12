@@ -38,7 +38,7 @@ class PostController extends BaseController
             'title' => 'required',
             'description' => 'required',
             'bookTitle' => 'required',
-           'bookDescription' => 'required',
+            'bookDescription' => 'required',
             'isbnNumber' => 'required',
             'bookAuthor' => 'required',
             'is_visible' => 'required'
