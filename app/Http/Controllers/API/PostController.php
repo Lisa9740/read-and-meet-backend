@@ -50,8 +50,10 @@ class PostController extends BaseController
 
 
         $book = $this->createBook($request);
+        $book->save();
 
         $localisation = $this->createPostLocalisation($request);
+        $localisation->save();
 
         $post = Post::create([
             'title'          => $request->get('title'),
@@ -60,10 +62,11 @@ class PostController extends BaseController
             'user_id'        => Auth::id(),
             'book_id'        => $book->id,
             'localisation_id'=> $localisation->id
+
         ]);
 
-        $localisation->save();
-        $book->save();
+
+
         $post->save();
         return $this->sendResponse($post);
     }
