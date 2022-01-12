@@ -18,9 +18,9 @@ class PostResource extends JsonResource
         return [
             'id'            => $this->id,
             'title'         => $this->title,
-            'book'          => new BookResource($this->book),
-            'user'          => new UserResource($this->user),
-            'localisation'  => new LocalisationResource($this->localisation),
+            'book'          => BookResource::collection($this->book),
+            'user'          => UserResource::collection($this->user),
+            'localisation'  => LocalisationResource::collection($this->localisation),
             'description'   => $this->description,
             'is_visible'    => $this->is_visible,
             'created_at'    => $this->created_at->format('d/m/Y'),
