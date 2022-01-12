@@ -57,7 +57,7 @@ class PostController extends BaseController
 
         $post = new Post();
         $post->title = $request->get('title');
-        $post->description = $request->get('description');
+
         $post->user_id = Auth::id();
         $post->book_id = $book->id;
         $post->localisation = $localisation->id;
