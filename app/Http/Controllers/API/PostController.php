@@ -24,6 +24,7 @@ class PostController extends BaseController
         return $this->sendResponse(PostResource::collection($posts));
     }
 
+
     /**
      * Store a newly created resource in storage.
      * @param Request $request
@@ -49,7 +50,9 @@ class PostController extends BaseController
 
 
         $book = $this->createBook($request);
+
         $localisation = $this->createPostLocalisation($request);
+
         $post = Post::create([
             'title'          => $request->get('title'),
             'description'    => $request->get('description'),
@@ -119,7 +122,7 @@ class PostController extends BaseController
         return $this->sendResponse(null);
     }
 
-    public function createBook(Request  $request)
+    public function createBook(Request $request)
     {
         return Book::create([
             'title' => $request->get('bookTitle'),
