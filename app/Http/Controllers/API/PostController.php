@@ -16,12 +16,12 @@ class PostController extends BaseController
 {
     /**
      * Display a listing of the resource.
-     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     * @return JsonResponse
      */
-    public function index(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+    public function index(): JsonResponse
     {
         $posts = Post::all();
-        return PostResource::collection($posts);
+        return $this->sendResponse(PostResource::collection($posts));
     }
 
 
@@ -57,8 +57,8 @@ class PostController extends BaseController
 
         $post = new Post();
         $post->title = $request->get('title');
-        $post->description = "";
-        $post->user_id = Auth::id();
+        $post->description = $request->get('description');
+        $post->user_id = $request->get('user_id');
         $post->book_id = $book->id;
         $post->localisation_id = $localisation->id;
         $post->is_visible = 1;
