@@ -96,6 +96,7 @@ class UserController extends BaseController
 
     /**
      * @throws \Illuminate\Validation\ValidationException
+     *
      */
     public function updateAvatar(Request $request)
     {
