@@ -62,6 +62,9 @@ class PostController extends BaseController
             'localisation_id'=> $localisation->id
         ]);
 
+        $localisation->save();
+        $book->save();
+        $post->save();
         return $this->sendResponse($post);
     }
 
