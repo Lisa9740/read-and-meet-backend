@@ -61,6 +61,7 @@ class PostController extends BaseController
         $post->user_id = Auth::id();
         $post->book_id = $book->id;
         $post->localisation_id = $localisation->id;
+        $post->is_visible = 1;
 
         $post->save();
         return $this->sendResponse($post);
