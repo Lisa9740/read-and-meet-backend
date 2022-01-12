@@ -57,9 +57,10 @@ class PostController extends BaseController
 
         $post = new Post();
         $post->title = $request->get('title');
+        $post->description = "";
         $post->user_id = Auth::id();
         $post->book_id = $book->id;
-        $post->localisation_id = $localisation->id;
+        $post->localisation = $localisation->id;
 
         $post->save();
         return $this->sendResponse($post);
