@@ -32,22 +32,6 @@ class PostController extends BaseController
      */
     public function store(Request $request): JsonResponse
     {
-        $input = $request->all();
-
-        $validator = Validator::make($input, [
-            'title' => 'required',
-            'description' => 'required',
-            'bookTitle' => 'required',
-            'bookDescription' => 'required',
-            'isbnNumber' => 'required',
-            'bookAuthor' => 'required',
-            'is_visible' => 'required'
-        ]);
-
-       /* if($validator->fails()){
-            return $this->sendError('Validation Error.', $validator->errors());
-        }*/
-
 
         $book = $this->createBook($request);
         $book->save();
@@ -58,7 +42,7 @@ class PostController extends BaseController
         $post = new Post();
         $post->title = $request->get('title');
         $post->description = $request->get('description');
-        $post->user_id = $request->get('user_id');
+        $post->user_id = Auth::id();
         $post->book_id = $book->id;
         $post->localisation_id = $localisation->id;
         $post->is_visible = 1;
