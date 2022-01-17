@@ -15,16 +15,16 @@ class Post extends Model
 
     public function user(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
-        return $this->hasOne(User::class, 'id');
+        return $this->hasOne(User::class, 'id', 'user_id');
     }
     public function book(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
-        return $this->hasOne(Book::class, 'id');
+        return $this->hasOne(Book::class, 'id', 'book_id');
     }
 
     public function localisation(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
-        return $this->hasOne(Localisation::class, 'id');
+        return $this->hasOne(Localisation::class, 'id', 'localisation_id');
     }
 
 }

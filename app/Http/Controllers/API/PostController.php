@@ -24,6 +24,7 @@ class PostController extends BaseController
         return $this->sendResponse(PostResource::collection($posts));
     }
 
+
     /**
      * Store a newly created resource in storage.
      * @param Request $request
@@ -31,34 +32,22 @@ class PostController extends BaseController
      */
     public function store(Request $request): JsonResponse
     {
-        $input = $request->all();
-
-        $validator = Validator::make($input, [
-            'title' => 'required',
-            'description' => 'required',
-            'bookTitle' => 'required',
-           'bookDescription' => 'required',
-            'isbnNumber' => 'required',
-            'bookAuthor' => 'required',
-            'is_visible' => 'required'
-        ]);
-
-       /* if($validator->fails()){
-            return $this->sendError('Validation Error.', $validator->errors());
-        }*/
-
 
         $book = $this->createBook($request);
-        $localisation = $this->createPostLocalisation($request);
-        $post = Post::create([
-            'title'          => $request->get('title'),
-            'description'    => $request->get('description'),
-            'is_visible'     => 1,
-            'user_id'        => Auth::id(),
-            'book_id'        => $book->id,
-            'localisation_id'=> $localisation->id
-        ]);
+        $book->save();
 
+        $localisation = $this->createPostLocalisation($request);
+        $localisation->save();
+
+        $post = new Post();
+        $post->title = $request->get('title');
+        $post->description = $request->get('description');
+        $post->user_id = Auth::id();
+        $post->book_id = $book->id;
+        $post->localisation_id = $localisation->id;
+        $post->is_visible = 1;
+
+        $post->save();
         return $this->sendResponse($post);
     }
 
@@ -119,15 +108,17 @@ class PostController extends BaseController
         return $this->sendResponse(null);
     }
 
-    public function createBook(Request  $request)
+    public function createBook(Request $request)
     {
-        return Book::create([
-            'title' => $request->get('bookTitle'),
-            'short_description' => $request->get('bookDescription'),
-            'isbn_number' => $request->get('isbnNumber'),
-            'author' => $request->get('bookAuthor'),
-            'image_thumbail_url' => $request->get('image')
-        ]);
+        $book = new Book();
+
+        $book->title =  $request->get('bookTitle');
+        $book->short_description =  $request->get('bookDescription');
+        $book->isbn_number = $request->get('isbnNumber');
+        $book->author = $request->get('bookAuthor');
+        $book->image_thumbail_url = $request->get('image');
+
+        return $book;
     }
 
     public function createPostLocalisation(Request $request){
