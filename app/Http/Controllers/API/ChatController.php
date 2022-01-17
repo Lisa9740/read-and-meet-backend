@@ -46,11 +46,11 @@ class ChatController extends BaseController
     public function showByUser(): JsonResponse
     {
 
-        $chat = DB::table('chats')->where('user_id', '=', Auth::id())->orWhere('author_id','=', Auth::id())->get();
+        $chat = DB::table('chats')->where('user_id', 'LIKE', Auth::id())->orWhere('author_id','LIKE', Auth::id())->get();
         if (is_null($chat)) {
             return $this->sendError('Chats not found.');
         }
-        return $this->sendResponse(new ChatResource($chat));
+        return $this->sendResponse($chat);
     }
 
 
