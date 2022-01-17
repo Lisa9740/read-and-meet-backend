@@ -50,7 +50,7 @@ class ChatController extends BaseController
         if (is_null($chat)) {
             return $this->sendError('Chats not found.');
         }
-        return $this->sendResponse(new ChatResource($chat));
+        return $this->sendResponse($chat);
     }
 
 
