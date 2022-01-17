@@ -54,7 +54,7 @@ class ChatController extends BaseController
         $message->chat_id = $request->get('chat_id');
         $message->user_id = Auth::id();
         $message->receiver_id = $request->get('user_id');
-        $message->message_text = $request->get('content');
+        $message->message_txt = $request->get('content');
         $message->image_url = $request->get('image_url');
 
         $message->save();
