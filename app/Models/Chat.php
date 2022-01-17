@@ -13,7 +13,7 @@ class Chat extends Model
 
     public function user(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
-        return $this->hasOne(User::class, 'id', 'author_id');
+        return $this->hasOne(User::class, 'id', 'user_id');
     }
 /*    public function users()
     {
