@@ -10,7 +10,7 @@ class Message extends Model
     use HasFactory;
 
     protected $table = 'messages';
-    protected $fillable = ['chat_id', 'author_id', 'user_id' ,'content'];
+    protected $fillable = ['chat_id', 'user_id', 'receiver_id' ,'message_text'];
 
     public function user(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
