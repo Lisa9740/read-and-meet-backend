@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\API;
 
 use App\Models\Chat;
+use App\Models\Message;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Http\Controllers\API\BaseController as BaseController;
@@ -37,6 +39,26 @@ class ChatController extends BaseController
 
         $chat->save();
         return $this->sendResponse($chat);
+    }
+
+
+    /**
+     * Store a newly created resource in storage.
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function createMessage(Request $request): JsonResponse
+    {
+
+        $message = new Message();
+        $message->chat_id = $request->get('chat_id');
+        $message->author_id = $request->get('author_id');
+        $message->receiver_id = $request->get('user_id');
+        $message->message_text = $request->get('content');
+        $message->image_url = $request->get('image_url');
+
+        $message->save();
+        return $this->sendResponse($message);
     }
 
     /**
