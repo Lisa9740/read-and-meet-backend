@@ -32,8 +32,8 @@ class ChatController extends BaseController
     {
 
         $chat = new Chat();
-        $chat->authorId = $request->get('author_id');
-        $chat->userId = $request->get('user_id');
+        $chat->author_id = $request->get('author_id');
+        $chat->user_id = $request->get('user_id');
 
         $chat->save();
         return $this->sendResponse($chat);
