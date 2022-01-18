@@ -33,12 +33,19 @@ class ChatController extends BaseController
     public function create(Request $request): JsonResponse
     {
 
-        $chat = new Chat();
-        $chat->author_id = Auth::id();
-        $chat->user_id = $request->get('user_id');
+        $isExistingChatWithUser = DB::table('chats')
+            ->where('user_id', 'LIKE', $request->get('user_id'))
+            ->orWhere('author_id', 'LIKE', $request->get('user_id'));
 
-        $chat->save();
-        return $this->sendResponse($chat);
+        if ($isExistingChatWithUser->count() < 1){
+            $chat = new Chat();
+            $chat->author_id = Auth::id();
+            $chat->user_id = $request->get('user_id');
+            $chat->save();
+            return $this->sendResponse($chat);
+        }
+        return $this->sendResponse($isExistingChatWithUser->first());
+
     }
 
 
@@ -55,7 +62,7 @@ class ChatController extends BaseController
         $message->user_id = Auth::id();
         $message->receiver_id = $request->get('user_id');
         $message->message_txt = $request->get('content');
-        $message->image_url = $request->get('image_url');
+        $message->image_url = "test";
 
         $message->save();
         return $this->sendResponse($message);
