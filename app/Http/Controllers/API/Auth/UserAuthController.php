@@ -41,6 +41,8 @@ class UserAuthController extends Controller
             $path = $request->file('user_picture')->store('public/images');
 
             $user = User::create([
+                'firstname'     => $request->firstname,
+                'lastname'     => $request->lastname,
                 'name'          => $request->name,
                 'email'         => $request->email,
                 'password'      => bcrypt($request->password),
