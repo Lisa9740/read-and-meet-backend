@@ -38,7 +38,7 @@ class UserAuthController extends Controller
                 'photo' => null]);
 
 
-            $path = $request->file('user_picture')->store('public/images');
+            $path = $request->file('user_picture')->store('public/images') ? $request->get("avatar") : "";
 
             $user = User::create([
                 'firstname'     => $request->firstname,
