@@ -28,8 +28,6 @@ class UserAuthController extends Controller
 //            'image' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
 //
 //        ]);
-        try {
-
             $token = null;
             $profile = Profile::create([
                 'description' => null,
@@ -52,11 +50,6 @@ class UserAuthController extends Controller
 
             $token = $user->createToken('LaravelAuthApp')->accessToken;
             return response()->json(['token' => $token], 200);
-        } catch (error $e){
-            return response()->json(['error' => $e], 500);
-        }
-
-
     }
 
     public function login(Request $request): \Illuminate\Http\JsonResponse
