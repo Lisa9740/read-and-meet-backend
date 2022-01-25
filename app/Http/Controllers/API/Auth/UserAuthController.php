@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\Auth;
 
+use App\Http\Resources\UserResource;
 use App\Models\Profile;
 use Error;
 use Illuminate\Http\Request;
@@ -50,7 +51,7 @@ class UserAuthController extends Controller
 
         if (auth()->attempt($data)) {
             $token = auth()->user()->createToken('LaravelAuthApp')->accessToken;
-            return response()->json(['user'=> auth()->user() , 'token' => $token,  'valid' => auth()->check()], 200);
+            return response()->json(['user'=> UserResource::collection(auth()->user()) , 'token' => $token,  'valid' => auth()->check()], 200);
         } else {
             return response()->json(['error' => 'Unauthorised'], 401);
         }
