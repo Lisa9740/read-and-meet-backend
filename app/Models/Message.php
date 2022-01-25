@@ -10,15 +10,11 @@ class Message extends Model
     use HasFactory;
 
     protected $table = 'messages';
-    protected $fillable = ['chat_id', 'user_id' ,'content'];
+    protected $fillable = ['chat_id', 'user_id', 'receiver_id' ,'message_text'];
 
     public function user(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
-        return $this->hasOne(Chat::class, 'id');
-    }
-    public function book(): \Illuminate\Database\Eloquent\Relations\HasOne
-    {
-        return $this->hasOne(User::class, 'id');
+        return $this->hasOne(Chat::class, 'id', 'user_id');
     }
 
 

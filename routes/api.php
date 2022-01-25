@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\ChatController;
 use App\Http\Controllers\API\ContactController;
 use App\Http\Controllers\API\ContactRequestController;
 use Illuminate\Support\Facades\Route;
@@ -71,6 +72,14 @@ Route::middleware(['auth:api'])->prefix('contact')->group(function () {
     Route::post('/request/remove/{id}',  [ ContactRequestController::class, 'removeContactRequest'])->where('id', "[0-9]+");
     Route::get('/list',  [ ContactController::class, 'index']);
 
+});
+
+Route::middleware(['auth:api'])->prefix('chat')->group(function () {
+    Route::post('/create', [ ChatController::class, 'create']);
+    Route::post('/create/message', [ ChatController::class, 'createMessage']);
+    Route::get('/messages', [ ChatController::class, 'showMessagesByUser']);
+    Route::post('/{id}', [ ChatController::class, 'get']);
+    Route::get('/list',  [ ChatController::class, 'showByUser']);
 });
 
 

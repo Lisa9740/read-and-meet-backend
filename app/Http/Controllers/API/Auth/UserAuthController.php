@@ -17,20 +17,7 @@ class UserAuthController extends Controller
      */
     public function register(Request $request): \Illuminate\Http\JsonResponse
     {
-        // todo : ajouter validation
-//        $this->validate($request, [
-//            'name' => 'required|min:4',
-//            'email' => 'required|email',
-//            'password' => 'required|min:8',
-//        ]);
 
-//        $validatedData = $request->validate([
-//            'image' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
-//
-//        ]);
-        try {
-
-            $token = null;
             $profile = Profile::create([
                 'description' => null,
                 'book_liked' => null,
@@ -38,9 +25,11 @@ class UserAuthController extends Controller
                 'photo' => null]);
 
 
-            $path = $request->file('user_picture')->store('public/images');
+            $path =  $request->get("avatar");
 
             $user = User::create([
+                'firstname'     => $request->firstname,
+                'lastname'     => $request->lastname,
                 'name'          => $request->name,
                 'email'         => $request->email,
                 'password'      => bcrypt($request->password),
@@ -50,11 +39,6 @@ class UserAuthController extends Controller
 
             $token = $user->createToken('LaravelAuthApp')->accessToken;
             return response()->json(['token' => $token], 200);
-        } catch (error $e){
-            return response()->json(['error' => $e], 500);
-        }
-
-
     }
 
     public function login(Request $request): \Illuminate\Http\JsonResponse
