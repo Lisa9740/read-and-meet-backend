@@ -17,10 +17,11 @@ class ProfileController extends BaseController
      */
     public function index(): \Illuminate\Http\JsonResponse
     {
+        $user = DB::table('users')->where('id', 'LIKE', Auth::id())->get();
 
         $profiles = DB::table('profiles')
             ->where('is_visible', 'LIKE', 1)
-            ->where('id', 'LIKE', Auth::user()->getAuthIdentifier()->profile_id)
+            ->where('id', 'LIKE', $user->first()->profile_id)
             ->get();
 
         return $this->sendResponse($profiles);
