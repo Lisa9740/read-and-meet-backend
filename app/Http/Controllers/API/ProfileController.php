@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Resources\ProfileResource;
 use App\Models\Profile;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
@@ -16,7 +17,12 @@ class ProfileController extends BaseController
      */
     public function index(): \Illuminate\Http\JsonResponse
     {
-        $profiles = DB::table('profiles')->where('is_visible', 'LIKE', 1)->get();
+
+        $profiles = DB::table('profiles')
+            ->where('is_visible', 'LIKE', 1)
+            ->where('id', 'LIKE', Auth::user()->getAuthIdentifier()->profile_id)
+            ->get();
+
         return $this->sendResponse($profiles);
     }
 
