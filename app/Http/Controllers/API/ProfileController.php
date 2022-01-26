@@ -21,7 +21,7 @@ class ProfileController extends BaseController
 
         $profiles = DB::table('profiles')
             ->where('is_visible', 'LIKE', 1)
-            ->where('id', 'LIKE', $user->first()->profile_id)
+            ->where('id', '!=', $user->first()->profile_id)
             ->get();
 
         return $this->sendResponse($profiles);
