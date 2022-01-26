@@ -48,7 +48,10 @@ class ContactRequestController extends BaseController
      */
     public function getReceivedContactRequest(): \Illuminate\Http\JsonResponse
     {
-        $contactRequests = DB::table('contact_requests')->where('to_user_id', 'LIKE', Auth::id())->get();
+        $contactRequests = DB::table('contact_requests')
+            ->where('to_user_id', 'LIKE', Auth::id())
+            ->where('accepted', 'LIKE', 0)
+            ->get();
 
 //        $list = [];
 //
