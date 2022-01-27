@@ -76,7 +76,7 @@ Route::middleware(['auth:api'])->prefix('contact')->group(function () {
 
 Route::middleware(['auth:api'])->prefix('chat')->group(function () {
     Route::post('/create', [ ChatController::class, 'create']);
-    Route::post('/create/message', [ ChatController::class, 'createMessage']);
+    Route::post('/message/create', [ ChatController::class, 'createMessage']);
     Route::get('/messages', [ ChatController::class, 'showMessagesByUser']);
     Route::post('/{id}', [ ChatController::class, 'get']);
     Route::get('/list',  [ ChatController::class, 'showByUser']);
