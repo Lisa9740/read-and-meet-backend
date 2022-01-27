@@ -34,18 +34,31 @@ class ChatController extends BaseController
      */
     public function create(Request $request): JsonResponse
     {
-        $isExistingChatWithUser = DB::table('chats')
-            ->where('participant_one', 'LIKE', $request->get('user_id'))
-            ->orWhere('participant_two', 'LIKE', $request->get('user_id'));
+        $isExistingChatWithUser = DB::table('chats')->where('participant_one', 'LIKE', $request->get('user_id'))->orWhere('participant_two', 'LIKE', $request->get('user_id'));
+
+        $participant1 = DB::table('users')->where('id', "LIKE", Auth::id())->get();
+        $participant2 = DB::table('users')->where('id', "LIKE", $request->get('user_id'))->get();
+
 
         if ($isExistingChatWithUser->count() < 1) {
             $chat = new Chat();
             $chat->participant_one = Auth::id();
             $chat->participant_two = $request->get('user_id');
             $chat->save();
-            return $this->sendResponse($chat);
+
+            $chatInfo = ['id'  => $chat->id,
+                'participant1' => $participant1,
+                'participant2' => $participant2];
+
+            return $this->sendResponse($chatInfo);
         }
-        return $this->sendResponse($isExistingChatWithUser->first());
+
+        $chat = $isExistingChatWithUser->first();
+        $chatInfo = ['id'  => $chat->id,
+            'participant1' => $participant1,
+            'participant2' => $participant2];
+
+        return $this->sendResponse($chatInfo);
     }
 
 
