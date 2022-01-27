@@ -9,15 +9,9 @@ class Chat extends Model
 {
     use HasFactory;
     protected $table = 'chats';
-    protected $fillable = ['author_id', 'user_id'];
+    protected $fillable = ['participant_one', 'participant_two'];
 
-    public function user(): \Illuminate\Database\Eloquent\Relations\HasOne
-    {
-        return $this->hasOne(User::class, 'id', 'user_id');
-    }
-/*    public function users()
-    {
-        return $this->morphToMany(User::class, 'users');
-    }*/
 
 }
+
+

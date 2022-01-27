@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Resources\UserResource;
 use App\Models\Chat;
 use App\Models\Message;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -32,20 +34,18 @@ class ChatController extends BaseController
      */
     public function create(Request $request): JsonResponse
     {
-
         $isExistingChatWithUser = DB::table('chats')
-            ->where('user_id', 'LIKE', $request->get('user_id'))
-            ->orWhere('author_id', 'LIKE', $request->get('user_id'));
+            ->where('participant_one', 'LIKE', $request->get('user_id'))
+            ->orWhere('participant_two', 'LIKE', $request->get('user_id'));
 
-        if ($isExistingChatWithUser->count() < 1){
+        if ($isExistingChatWithUser->count() < 1) {
             $chat = new Chat();
-            $chat->author_id = Auth::id();
-            $chat->user_id = $request->get('user_id');
+            $chat->participant_one = Auth::id();
+            $chat->participant_two = $request->get('user_id');
             $chat->save();
             return $this->sendResponse($chat);
         }
         return $this->sendResponse($isExistingChatWithUser->first());
-
     }
 
 
@@ -74,12 +74,30 @@ class ChatController extends BaseController
      */
     public function showByUser(): JsonResponse
     {
-        $chat = DB::table('chats')->where('user_id', 'LIKE', Auth::id())->orWhere('author_id','LIKE', Auth::id())->get();
+        $chats = DB::table('chats')->where('participant_one', 'LIKE', Auth::id())->orWhere('participant_two','LIKE', Auth::id())->get();
+        $participant1 = DB::table('users')->where('id', "LIKE", Auth::id())->get();
+
+        $chatsInfo = [];
+        foreach ($chats as $chat){
+            if ($chat->participant_one != Auth::id()){
+                $searchedId = $chat->participant_one;
+            }else{
+                $searchedId = $chat->participant_two;
+            }
+
+            $participant2 = DB::table('users')->where('id', "LIKE", $searchedId)->get();
+
+            $chatsInfo[] = [
+                'id'           => $chat->id,
+                'participant1' => $participant1,
+                'participant2' => $participant2,
+            ];
+        }
 
         if (is_null($chat)) {
             return $this->sendError('Chats not found.');
         }
-        return $this->sendResponse($chat);
+        return $this->sendResponse($chatsInfo);
     }
 
 
