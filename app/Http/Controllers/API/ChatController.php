@@ -120,7 +120,7 @@ class ChatController extends BaseController
      */
     public function showMessagesByChat($id): JsonResponse
     {
-        $messages = DB::table('messages')->where('chat_id', 'LIKE', $id);
+        $messages = DB::table('messages')->where('chat_id', 'LIKE', $id)->get();
 
         if (is_null($messages)) {
             return $this->sendError('Message chats not found.');
