@@ -94,7 +94,7 @@ class ChatController extends BaseController
             ];
         }
 
-        if (is_null($chat)) {
+        if (is_null($chats)) {
             return $this->sendError('Chats not found.');
         }
         return $this->sendResponse($chatsInfo);
