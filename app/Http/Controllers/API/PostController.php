@@ -111,7 +111,7 @@ class PostController extends BaseController
     public function createBooks(Request $request)
     {
         $books = $request->get("books");
-
+        $books = json_decode($books);
 
         for ($i = 0; $i <= $books->count(); $i++){
             $newBook = new Book();
