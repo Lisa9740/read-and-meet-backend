@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class ChangeRelationPostsWithBookTable extends Migration
+class AddRelationsPostsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class ChangeRelationPostsWithBookTable extends Migration
      */
     public function up()
     {
-        Schema::table('books', function (Blueprint $table) {
-            $table->unsignedBigInteger('post_id');
-            $table->foreign('post_id')->references('id')->on('posts');
+        Schema::disableForeignKeyConstraints();
+        Schema::table('posts', function (Blueprint $table) {
+            $table->dropForeign(['book_id']);
         });
+        Schema::enableForeignKeyConstraints();
     }
 
     /**
@@ -26,6 +27,7 @@ class ChangeRelationPostsWithBookTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('posts', function (Blueprint $table) {
+        });
     }
 }
