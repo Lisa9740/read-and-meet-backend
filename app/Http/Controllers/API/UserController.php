@@ -33,11 +33,7 @@ class UserController extends BaseController
     public function show($id)
     {
         $user = User::find($id);
-
-        if (is_null($user)) {
-            return $this->sendError('User not found.');
-        }
-
+        
         return $this->sendResponse(new UserResource($user), 'User retrieved successfully.');
     }
 
