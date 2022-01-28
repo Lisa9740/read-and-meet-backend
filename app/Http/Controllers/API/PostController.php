@@ -112,12 +112,12 @@ class PostController extends BaseController
     {
         $books = $request->get("books");
 
-        foreach ($books as  $book){
+        foreach ($books as $book){
             $newBook = new Book();
-            $newBook->title =  $book['bookTitle'];
-            $newBook->short_description = $book['bookDescription'];
-            $newBook->isbn_number = $book['isbNumber'];
-            $newBook->author = $book['bookAuthor'];
+            $newBook->title =  $book['title'];
+            $newBook->short_description = $book['description'];
+            $newBook->isbn_number = "ffff";
+            $newBook->author = $book['author'];
             $newBook->image_thumbail_url = $book['image'];
         }
         return $books;
