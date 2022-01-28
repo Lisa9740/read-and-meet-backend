@@ -18,7 +18,7 @@ class PostResource extends JsonResource
         return [
             'id'            => $this->id,
             'title'         => $this->title,
-            'book'          => new BookResource($this->book),
+            'books'          =>  BookResource::collection($this->book),
             'user'          => new UserResource($this->user),
             'localisation'  => new LocalisationResource($this->localisation),
             'description'   => $this->description,

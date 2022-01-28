@@ -33,7 +33,7 @@ class PostController extends BaseController
     public function store(Request $request): JsonResponse
     {
 
-        $book = $this->createBook($request);
+        $book = $this->createBooks($request);
         $book->save();
 
         $localisation = $this->createPostLocalisation($request);
@@ -48,7 +48,7 @@ class PostController extends BaseController
         $post->is_visible = 1;
 
         $post->save();
-        return $this->sendResponse($post);
+        return $this->sendResponse(new PostResource($post));
     }
 
     /**
@@ -108,17 +108,20 @@ class PostController extends BaseController
         return $this->sendResponse(null);
     }
 
-    public function createBook(Request $request)
+    public function createBooks(Request $request)
     {
-        $book = new Book();
+        $books = $request->get("books");
 
-        $book->title =  $request->get('bookTitle');
-        $book->short_description =  $request->get('bookDescription');
-        $book->isbn_number = $request->get('isbnNumber');
-        $book->author = $request->get('bookAuthor');
-        $book->image_thumbail_url = $request->get('image');
+        foreach ($books as  $book){
+            $newBook = new Book();
+            $newBook->title =  $book['bookTitle'];
+            $newBook->short_description = $book['bookDescription'];
+            $newBook->isbn_number = $book['isbNumber'];
+            $newBook->author = $book['bookAuthor'];
+            $newBook->image_thumbail_url = $book['image'];
+        }
+        return $books;
 
-        return $book;
     }
 
     public function createPostLocalisation(Request $request){

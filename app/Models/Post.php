@@ -11,15 +11,16 @@ class Post extends Model
     use HasFactory;
 
     protected $table = 'posts';
-    protected $fillable = ['title','description','user_id', 'book_id', "localisation_id", "is_visible"];
+    protected $fillable = ['title','description','user_id', "localisation_id", "is_visible"];
 
     public function user(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
         return $this->hasOne(User::class, 'id', 'user_id');
     }
-    public function book(): \Illuminate\Database\Eloquent\Relations\HasOne
+
+    public function book(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasOne(Book::class, 'id', 'book_id');
+        return $this->hasMany(Book::class, 'id', 'post_id');
     }
 
     public function localisation(): \Illuminate\Database\Eloquent\Relations\HasOne
