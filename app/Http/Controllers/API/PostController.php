@@ -110,16 +110,19 @@ class PostController extends BaseController
 
     public function createBooks(Request $request)
     {
-        $books = $request->get("books")[0][0];
+        $books = $request->get("books");
 
-        foreach ($books as $book){
+
+        for ($i = 0; $i <= $books->count(); $i++){
             $newBook = new Book();
-            $newBook->title =  $book['title'];
-            $newBook->short_description = $book['description'];
+            $newBook->title =  $books[$i]['title'];
+            $newBook->short_description = $books[$i]['description'];
             $newBook->isbn_number = "ffff";
-            $newBook->author = $book['author'];
-            $newBook->image_thumbail_url = $book['image'];
+            $newBook->author = $books[$i]['author'];
+            $newBook->image_thumbail_url = $books[$i]['image'];
         }
+
+
         return $books;
 
     }
