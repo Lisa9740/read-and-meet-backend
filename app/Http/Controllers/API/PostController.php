@@ -110,7 +110,7 @@ class PostController extends BaseController
 
     public function createBooks(Request $request)
     {
-        $books = $request->get("books");
+        $books = $request->get("books")[0];
 
         foreach ($books as $book){
             $newBook = new Book();
