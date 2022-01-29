@@ -32,10 +32,6 @@ class PostController extends BaseController
      */
     public function store(Request $request): JsonResponse
     {
-
-        $book = $this->createBooks($request);
-        $book->save();
-
         $localisation = $this->createPostLocalisation($request);
         $localisation->save();
 
@@ -43,11 +39,14 @@ class PostController extends BaseController
         $post->title = $request->get('title');
         $post->description = $request->get('description');
         $post->user_id = Auth::id();
-        $post->book_id = $book->id;
         $post->localisation_id = $localisation->id;
         $post->is_visible = 1;
 
+        $this->createBooks($request, $post->id);
+    //    $post->books = $books;
         $post->save();
+
+
         return $this->sendResponse(new PostResource($post));
     }
 
@@ -108,20 +107,20 @@ class PostController extends BaseController
         return $this->sendResponse(null);
     }
 
-    public function createBooks(Request $request)
+    public function createBooks(Request $request, $id)
     {
-        $books = $request->get("books");
-        $books = json_decode($books);
 
-        for ($i = 0; $i <= $books->count(); $i++){
+        $books = json_decode($request->get("books"))[0];
+
+        foreach ($books as $book){
             $newBook = new Book();
-            $newBook->title =  $books[$i]['title'];
-            $newBook->short_description = $books[$i]['description'];
+            $newBook->title =  $book->title;
+            $newBook->short_description = $book->description;
             $newBook->isbn_number = "ffff";
-            $newBook->author = $books[$i]['author'];
-            $newBook->image_thumbail_url = $books[$i]['image'];
+            $newBook->author = $book->author;
+            $newBook->image_thumbail_url = $book->image;
+            $newBook->post_id = $id;
         }
-
 
         return $books;
 
