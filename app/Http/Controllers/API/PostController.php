@@ -120,7 +120,9 @@ class PostController extends BaseController
             $newBook->author = $book->author;
             $newBook->image_thumbail_url = $book->image;
             $newBook->post_id = $id;
+            $newBook->save();
         }
+
 
         return $books;
 
