@@ -50,6 +50,21 @@ class BookController extends BaseController
         return $this->sendResponse(new BookResource($book));
     }
 
+
+    /**
+     * Display the specified resource.
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function showByPost(int $id): JsonResponse
+    {
+        $book = Book::all()->where('post_id', 'LIKE', $id);
+        if (is_null($book)) {
+            return $this->sendError('Book Post not found.');
+        }
+        return $this->sendResponse(new BookResource($book));
+    }
+
     /**
      * Update the specified resource in storage.
      * @param Request $request
