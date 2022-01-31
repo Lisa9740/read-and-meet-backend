@@ -40,11 +40,11 @@ class PostController extends BaseController
         $post->description = $request->get('description');
         $post->user_id = Auth::id();
         $post->localisation_id = $localisation->id;
-        $post->is_visible = 1;
+        $post->is_visible = $request->get('is_visible');
 
+        $post->save();
         $this->createBooks($request, $post->id);
     //    $post->books = $books;
-        $post->save();
 
 
         return $this->sendResponse(new PostResource($post));
@@ -110,7 +110,7 @@ class PostController extends BaseController
     public function createBooks(Request $request, $id)
     {
 
-        $books = json_decode($request->get("books"))[0];
+        $books = json_decode($request->get("books"));
 
         foreach ($books as $book){
             $newBook = new Book();
