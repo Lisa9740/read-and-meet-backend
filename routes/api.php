@@ -53,7 +53,7 @@ Route::middleware(['auth:api'])->prefix('post')->group(function () {
 Route::middleware(['auth:api'])->prefix('book')->group(function () {
     Route::get('/{id}', [BookController::class, 'show'])->where('id', "[0-9]+");
     Route::post('/create', [BookController::class, 'store'])->name('api.book.create');
-    Route::post('/post/{id}', [BookController::class, 'showByPost'])->name('api.book.get.by.posts');
+    Route::get('/post/{id}', [BookController::class, 'showByPost'])->name('api.book.get.by.posts');
 
 });
 

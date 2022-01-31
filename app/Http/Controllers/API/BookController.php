@@ -6,6 +6,7 @@ use App\Http\Resources\BookResource;
 use App\Models\Book;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class BookController extends BaseController
@@ -58,11 +59,9 @@ class BookController extends BaseController
      */
     public function showByPost(int $id): JsonResponse
     {
-        $book = Book::all()->where('post_id', 'LIKE', $id);
-        if (is_null($book)) {
-            return $this->sendError('Book Post not found.');
-        }
-        return $this->sendResponse(new BookResource($book));
+        $books= DB::table('books')->where('post_id', 'LIKE', $id)->get();
+
+        return $this->sendResponse(BookResource::collection($books));
     }
 
     /**

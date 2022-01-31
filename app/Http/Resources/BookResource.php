@@ -17,7 +17,9 @@ class BookResource extends JsonResource
         return [
             'title' => $this->title,
             'description' => $this->short_description,
-            'cover' => $this->image_thumbail_url
+            'cover' => $this->image_thumbail_url,
+            'author' => $this->author,
+            'post_id' => $this->post_id
         ];
     }
 }
