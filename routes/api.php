@@ -25,10 +25,12 @@ Route::post('/register', [UserAuthController::class, 'register']) ;
 Route::post('/connexion', [UserAuthController::class, 'login'])->name('login');
 Route::get('/authorization', [UserAuthController::class, 'verifyToken'])->name('authorization');
 Route::get('/logout', [UserAuthController::class, 'logout'])->middleware('auth:api')->name('api.logout');
+Route::get('/posts', [PostController::class, 'index'])->name('api.posts');
+
 
 Route::middleware(['auth:api'])->group(function () {
     Route::get('/users', [UserController::class, 'index'])->name('api.users');
-    Route::get('/posts', [PostController::class, 'index'])->name('api.posts');
+
     Route::get('/books', [BookController::class, 'index'])->name('api.books');
     Route::get('/profiles', [ProfileController::class, 'index'])->name('api.profiles');
 });
