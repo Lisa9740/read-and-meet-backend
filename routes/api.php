@@ -27,6 +27,7 @@ Route::get('/authorization', [UserAuthController::class, 'verifyToken'])->name('
 Route::get('/logout', [UserAuthController::class, 'logout'])->middleware('auth:api')->name('api.logout');
 Route::get('/posts', [PostController::class, 'index'])->name('api.posts');
 Route::get('/books', [BookController::class, 'index'])->name('api.books');
+Route::get('/book/post/{id}', [BookController::class, 'showByPost'])->name('api.book.get.by.posts');
 
 Route::middleware(['auth:api'])->group(function () {
     Route::get('/users', [UserController::class, 'index'])->name('api.users');
@@ -53,9 +54,7 @@ Route::middleware(['auth:api'])->prefix('post')->group(function () {
 Route::middleware(['auth:api'])->prefix('book')->group(function () {
     Route::get('/{id}', [BookController::class, 'show'])->where('id', "[0-9]+");
     Route::post('/create', [BookController::class, 'store'])->name('api.book.create');
-    Route::get('/post/{id}', [BookController::class, 'showByPost'])->name('api.book.get.by.posts');
-
-});
+  });
 
 
 Route::middleware(['auth:api'])->prefix('profile')->group(function () {

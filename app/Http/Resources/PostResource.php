@@ -11,14 +11,13 @@ class PostResource extends JsonResource
      * Transform the resource into an array.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
+     * @return array
      */
     public function toArray($request)
     {
         return [
             'id'            => $this->id,
             'title'         => $this->title,
-            'books'          =>  BookResource::collection($this->book),
             'user'          => new UserResource($this->user),
             'localisation'  => new LocalisationResource($this->localisation),
             'description'   => $this->description,

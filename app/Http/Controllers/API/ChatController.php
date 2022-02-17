@@ -39,26 +39,17 @@ class ChatController extends BaseController
         $participant1 = DB::table('users')->where('id', "LIKE", Auth::id())->get();
         $participant2 = DB::table('users')->where('id', "LIKE", $request->get('user_id'))->get();
 
+        $chat = new Chat();
+        $chat->participant_one = Auth::id();
+        $chat->participant_two = $request->get('user_id');
+        $chat->save();
 
-        if ($isExistingChatWithUser->count() < 1) {
-            $chat = new Chat();
-            $chat->participant_one = Auth::id();
-            $chat->participant_two = $request->get('user_id');
-            $chat->save();
-
-            $chatInfo = ['id'  => $chat->id,
-                'participant1' => $participant1,
-                'participant2' => $participant2];
-
-            return $this->sendResponse($chatInfo);
-        }
-
-        $chat = $isExistingChatWithUser->first();
         $chatInfo = ['id'  => $chat->id,
             'participant1' => $participant1,
             'participant2' => $participant2];
 
         return $this->sendResponse($chatInfo);
+
     }
 
 
@@ -74,7 +65,7 @@ class ChatController extends BaseController
         $message->chat_id = $request->get('chat_id');
         $message->user_id = Auth::id();
         $message->receiver_id = $request->get('user_id');
-        $message->message_txt = $request->get('content');
+        $message->message_txt = $request->get('message_txt');
         $message->image_url = "test";
 
         $message->save();

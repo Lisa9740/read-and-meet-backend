@@ -9,6 +9,8 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Http\Controllers\API\BaseController as BaseController;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\PostResource as PostResource;
 
@@ -20,7 +22,12 @@ class PostController extends BaseController
      */
     public function index(): JsonResponse
     {
-        $posts = Post::all();
+        $posts = Post::where('is_visible',  '=', 1)->get();
+
+        //$posts = DB::table("posts")->where('is_visible',  '=', 1)->get();
+
+        Log::info($posts);
+
         return $this->sendResponse(PostResource::collection($posts));
     }
 
@@ -44,7 +51,7 @@ class PostController extends BaseController
 
         $post->save();
         $this->createBooks($request, $post->id);
-    //    $post->books = $books;
+
 
 
         return $this->sendResponse(new PostResource($post));
@@ -111,10 +118,11 @@ class PostController extends BaseController
     {
 
         $books = json_decode($request->get("books"));
+        Log::info($books);
 
         foreach ($books as $book){
             $newBook = new Book();
-            $newBook->title =  $book->title;
+            $newBook->title = $book->title;
             $newBook->short_description = $book->description;
             $newBook->isbn_number = "ffff";
             $newBook->author = $book->author;
@@ -124,7 +132,7 @@ class PostController extends BaseController
         }
 
 
-        return $books;
+        //return $books;
 
     }
 

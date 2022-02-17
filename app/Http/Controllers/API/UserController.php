@@ -33,7 +33,7 @@ class UserController extends BaseController
     public function show($id)
     {
         $user = User::find($id);
-        
+
         return $this->sendResponse(new UserResource($user), 'User retrieved successfully.');
     }
 
@@ -109,7 +109,7 @@ class UserController extends BaseController
         $user = User::where('id', Auth::id())->first();
         if ($request->hasFile('image')) {
             if ($request->hasFile('image')) {
-                $oldImage = $user->avatar;
+                $oldImage = $user->user_picture;
 
                 if ($oldImage != null && $oldImage != "avatars/default.png") {
                     $oldFilePath = public_path('images') . '/' . $oldImage;
