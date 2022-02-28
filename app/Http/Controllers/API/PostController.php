@@ -120,13 +120,16 @@ class PostController extends BaseController
         $books = json_decode($request->get("books"));
         Log::info($books);
 
+
+
         foreach ($books as $book){
             $newBook = new Book();
+            $path = $book->image->store('public/images');
             $newBook->title = $book->title;
             $newBook->short_description = $book->description;
             $newBook->isbn_number = "ffff";
             $newBook->author = $book->author;
-            $newBook->image_thumbail_url = $book->image;
+            $newBook->image_thumbail_url = $path;
             $newBook->post_id = $id;
             $newBook->save();
         }
