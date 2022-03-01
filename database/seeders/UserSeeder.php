@@ -24,13 +24,18 @@ class UserSeeder extends Seeder
             $user = new User();
 
             $profile->description  = $faker->text(50);
+            $profile->description  = $faker->text(50);
             $profile->book_liked   = $faker->text(10);
             $profile->photo        = $faker->imageUrl();
             $profile->is_visible   = $visibility[$i];
             $profile->save();
 
+            $name = $faker->firstName() . " " .  $faker->lastName();
+
             $user->profile_id    = $profile->id;
-            $user->name         = $faker->firstName();
+            $user->firstname         = $faker->firstName();
+            $user->lastname         = $faker->lastName();
+            $user->name         =  $name;
             $user->email        = $faker->email();
             $user->password     = Hash::make('password');
             $user->user_picture = $faker->imageUrl();

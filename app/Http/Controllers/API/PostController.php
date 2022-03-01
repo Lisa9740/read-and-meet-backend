@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Models\Book;
+use App\Models\File;
 use App\Models\Localisation;
 use App\Models\Post;
 use Illuminate\Http\JsonResponse;
@@ -103,8 +104,8 @@ class PostController extends BaseController
 
     /**
      * Remove the specified resource from storage.
-    * @param int $id
-    * @return JsonResponse
+     * @param int $id
+     * @return JsonResponse
      */
     public function destroy(int $id): JsonResponse
     {
@@ -114,22 +115,20 @@ class PostController extends BaseController
         return $this->sendResponse(null);
     }
 
+
     public function createBooks(Request $request, $id)
     {
-
         $books = json_decode($request->get("books"));
         Log::info($books);
 
-
-
         foreach ($books as $book){
             $newBook = new Book();
-            $path = $book->image->store('public/images');
             $newBook->title = $book->title;
             $newBook->short_description = $book->description;
             $newBook->isbn_number = "ffff";
             $newBook->author = $book->author;
-            $newBook->image_thumbail_url = $path;
+            $newBook->image_thumbail_url = $book->image;
+            $newBook->price = $book->price;
             $newBook->post_id = $id;
             $newBook->save();
         }
@@ -141,8 +140,8 @@ class PostController extends BaseController
 
     public function createPostLocalisation(Request $request){
         return Localisation::create([
-           'lat' => $request->get('lat'),
-           'lng' => $request->get('lng'),
+            'lat' => $request->get('lat'),
+            'lng' => $request->get('lng'),
             'city' => $request->get('city')
         ]);
     }

@@ -31,6 +31,7 @@ class BookController extends BaseController
         $book =  Book::create([
             'title' => $request->get('bookTitle'),
             'short_description' => $request->get('bookDescription'),
+            'image_thumbail_url' =>$request->get('image_thumbail_url'),
             'isbn_number' => $request->get('isbnNumber'),
             'author' => $request->get('bookAuthor'),
         ]);

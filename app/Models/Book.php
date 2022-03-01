@@ -10,5 +10,5 @@ class Book extends Model
     use HasFactory;
 
     protected $table = 'books';
-    protected $fillable = ['title', 'isbn_number', 'author', 'image_thumbail_url', 'short_description', 'post_id'];
+    protected $fillable = ['title', 'isbn_number', 'author', 'image_thumbail_url', 'short_description', 'post_id', 'price'];
 }
