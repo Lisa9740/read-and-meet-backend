@@ -17,17 +17,22 @@ class ImageController extends BaseController
     public function savePostImages(Request $request)
     {
         $count = 1;
+        Log::info("test", $request->allFiles());
 
         foreach ($request->allFiles() as $photo) {
-            $filename = $request["name" . strval($count)];
-            Log::info("test", (array)strval($count));
+
+            $filename = $request["name" . $count];
+            Log::info("test", (array)$filename);
             $path = $photo->store('public/photos');
-            File::create([
+            $file = File::create([
                 'path' => $path,
                 'filename' => strval($filename),
                 'authorId' => Auth::id()
             ]);
+
+            $file->save();
             $count = $count + 1;
+
         }
         echo "Upload Successfully";
     }

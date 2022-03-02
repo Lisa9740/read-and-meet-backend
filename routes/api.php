@@ -31,6 +31,7 @@ Route::get('/books', [BookController::class, 'index'])->name('api.books');
 Route::get('/book/post/{id}', [BookController::class, 'showByPost'])->name('api.book.get.by.posts');
 
 Route::middleware(['auth:api'])->group(function () {
+    Route::post('/upload/image', [ImageController::class, 'savePostImages'])->name('api.post.image.upload');
     Route::get('/users', [UserController::class, 'index'])->name('api.users');
     Route::get('/profiles', [ProfileController::class, 'index'])->name('api.profiles');
 });
@@ -47,7 +48,6 @@ Route::middleware(['auth:api'])->prefix('user')->group(function () {
 Route::middleware(['auth:api'])->prefix('post')->group(function () {
     Route::get('/{id}', [PostController::class, 'show'])->where('id', "[0-9]+");
     Route::post('/create', [PostController::class, 'store'])->name('api.post.create');
-    Route::post('/upload/image', [ImageController::class, 'savePostImages'])->name('api.post.image.upload');
     Route::get('/image/{url}', [ImageController::class, 'getPostImage'])->name('api.post.image');
     Route::post('/update/{id}', [PostController::class, 'update'])->name('api.post.update');
     Route::post('/delete/{id}', [PostController::class, 'destroy'])->name('api.post.delete');
