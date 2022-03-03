@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\API\BaseController;
 use App\Http\Resources\UserResource;
+use App\Models\File;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -106,19 +107,37 @@ class UserController extends BaseController
             ]
         )->validate();
 
+
+        $requestedBaseUrl = $request['url'];
+
         $user = User::where('id', Auth::id())->first();
         if ($request->hasFile('image')) {
             if ($request->hasFile('image')) {
                 $oldImage = $user->user_picture;
 
                 if ($oldImage != null && $oldImage != "avatars/default.png") {
-                    $oldFilePath = public_path('images') . '/' . $oldImage;
-                    unlink($oldFilePath);
+                   // $oldFilePath = public_path('images') . '/' . $oldImage;
+                   // unlink($oldFilePath);
+
                     $imageUploaded  = $validator['image'];
+
+                    $path = $imageUploaded->store('public/avatars');
+                    $file = File::create([
+                        'path' => $path,
+                        'filename' => strval($request['image']),
+                        'authorId' => Auth::id()
+                    ]);
+
+                    $file->save();
+
+
                     $extension      = $imageUploaded->getClientOriginalExtension();
                     $image          = time() . rand() . '.' . $extension;
                     $imageUploaded->move(public_path('images/avatars'), $image);
-                    $user->avatar = $image;
+                    $storageImageFilename = explode("/", $path);
+
+                    $user->user_picture = $requestedBaseUrl . '/storage/avatars/' . end($storageImageFilename);
+
                 } else {
                     $imageUploaded  = $validator['image'];
                     $extension      = $imageUploaded->getClientOriginalExtension();
@@ -128,8 +147,9 @@ class UserController extends BaseController
                 }
             }
         }
+
         $user->save();
-        return response('Avatar changer avec succès', 200);;
+        return response($user, 200);;
     }
 }
 
