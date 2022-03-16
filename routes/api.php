@@ -44,8 +44,6 @@ Route::get('/logout', [UserAuthController::class, 'logout'])->middleware('auth:a
 Route::middleware(['auth:api'])->group(function () {
     Route::get('/users', [UserController::class, 'index'])->name('api.users');
 });
-
-
 Route::middleware(['auth:api'])->prefix('user')->group(function () {
     Route::get('/{id}', [UserController::class, 'show'])->where('id', "[0-9]+");
     Route::post('/update', [UserController::class, 'updateUser'])->name('api.users.update');
