@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Resources\MessageResource;
 use App\Http\Resources\UserResource;
 use App\Models\Chat;
 use App\Models\Message;
@@ -32,7 +33,7 @@ class ChatController extends BaseController
      * @param Request $request
      * @return JsonResponse
      */
-    public function create(Request $request): JsonResponse
+    public function store(Request $request): JsonResponse
     {
         $isExistingChatWithUser = DB::table('chats')->where('participant_one', 'LIKE', $request->get('user_id'))->orWhere('participant_two', 'LIKE', $request->get('user_id'));
 
@@ -104,20 +105,6 @@ class ChatController extends BaseController
         return $this->sendResponse($chatsInfo);
     }
 
-
-    /**
-     * Display the specified resource.
-     * @return JsonResponse
-     */
-    public function showMessagesByChat($id): JsonResponse
-    {
-        $messages = DB::table('messages')->where('chat_id', 'LIKE', $id)->get();
-
-        if (is_null($messages)) {
-            return $this->sendError('Message chats not found.');
-        }
-        return $this->sendResponse($messages);
-    }
 
 
     /**

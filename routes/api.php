@@ -4,6 +4,7 @@ use App\Http\Controllers\API\ChatController;
 use App\Http\Controllers\API\ContactController;
 use App\Http\Controllers\API\ContactRequestController;
 use App\Http\Controllers\API\ImageController;
+use App\Http\Controllers\API\MessageController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\Auth\UserAuthController;
 use App\Http\Controllers\API\ProfileController;
@@ -21,71 +22,146 @@ use App\Http\Controllers\API\BookController;
 |
 */
 
+/***
+ *
+ * AUTH ROUTES
+ *
+ */
 
 Route::post('/register', [UserAuthController::class, 'register']) ;
 Route::post('/connexion', [UserAuthController::class, 'login'])->name('login');
 Route::get('/authorization', [UserAuthController::class, 'verifyToken'])->name('authorization');
 Route::get('/logout', [UserAuthController::class, 'logout'])->middleware('auth:api')->name('api.logout');
-Route::get('/posts', [PostController::class, 'index'])->name('api.posts');
-Route::get('/books', [BookController::class, 'index'])->name('api.books');
-Route::get('/book/post/{id}', [BookController::class, 'showByPost'])->name('api.book.get.by.posts');
+
+
+
+/***
+ *
+ * USERS ROUTES
+ *
+ */
 
 Route::middleware(['auth:api'])->group(function () {
-    Route::post('/upload/image', [ImageController::class, 'savePostImages'])->name('api.post.image.upload');
     Route::get('/users', [UserController::class, 'index'])->name('api.users');
-    Route::get('/profiles', [ProfileController::class, 'index'])->name('api.profiles');
 });
+
 
 Route::middleware(['auth:api'])->prefix('user')->group(function () {
     Route::get('/{id}', [UserController::class, 'show'])->where('id', "[0-9]+");
     Route::post('/update', [UserController::class, 'updateUser'])->name('api.users.update');
     Route::post('/update/avatar', [UserController::class, 'updateAvatar']);
     Route::post('/update/password', [UserController::class, 'updatePassword']);
+
+    Route::get('/contacts', [ContactController::class, 'show'])->where('id', "[0-9]+");
+    Route::get('/chats',  [ ChatController::class, 'showByUser']);
+    Route::get('/messages',  [ MessageController::class, 'showByUser']);
+    Route::get('/chat/{id}', [ MessageController::class, 'showMessagesByChat'])->where('id', "[0-9]+");
 });
 
+/***
+ *
+ * POSTS ROUTES
+ *
+ */
 
+Route::get('/posts', [PostController::class, 'index'])->name('api.posts');
 
 Route::middleware(['auth:api'])->prefix('post')->group(function () {
     Route::get('/{id}', [PostController::class, 'show'])->where('id', "[0-9]+");
-    Route::post('/create', [PostController::class, 'store'])->name('api.post.create');
+    Route::post('/', [PostController::class, 'store'])->name('api.create.post');
     Route::get('/image/{url}', [ImageController::class, 'getPostImage'])->name('api.post.image');
     Route::post('/update/{id}', [PostController::class, 'update'])->name('api.post.update');
     Route::post('/delete/{id}', [PostController::class, 'destroy'])->name('api.post.delete');
 });
 
+
+/***
+ *
+ * BOOKS ROUTES
+ *
+ */
+
+Route::get('/books', [BookController::class, 'index'])->name('api.books');
+
+Route::get('/book/post/{id}', [BookController::class, 'showByPost'])->name('api.get.book.posts');
+
 Route::middleware(['auth:api'])->prefix('book')->group(function () {
+    Route::post('/', [BookController::class, 'store'])->name('api.book.store');
     Route::get('/{id}', [BookController::class, 'show'])->where('id', "[0-9]+");
-    Route::post('/create', [BookController::class, 'store'])->name('api.book.create');
   });
 
+/***
+ *
+ * PROFILES ROUTES
+ *
+ */
+
+Route::middleware(['auth:api'])->group(function () {
+    Route::get('/profiles', [ProfileController::class, 'index'])->name('api.profiles');
+});
 
 Route::middleware(['auth:api'])->prefix('profile')->group(function () {
     Route::get('/{id}', [ProfileController::class, 'show'])->where('id', "[0-9]+");
-    Route::post('/edit/{id}', [ProfileController::class, 'edit'])->where('id', "[0-9]+");
-    Route::post('/edit/visibility/{id}', [ProfileController::class, 'changeVisibility'])->where('id', "[0-9]+");
-    Route::post('/edit/photo/{id}', [ProfileController::class, 'changePhoto'])->where('id', "[0-9]+");
+    Route::put('/{id}', [ProfileController::class, 'edit'])->where('id', "[0-9]+"); // TODO : change to method post to update
+    Route::put('/visibility/{id}', [ProfileController::class, 'changeVisibility'])->where('id', "[0-9]+"); // TODO : change to method post to update
+    Route::put('/photo/{id}', [ProfileController::class, 'changePhoto'])->where('id', "[0-9]+"); // TODO : change to method post to update
 });
 
+/***
+ *
+ * CONTACTS ROUTES
+ *
+ */
+Route::middleware(['auth:api'])->group(function () {
+    Route::get('/contacts',  [ ContactController::class, 'index']);
+});
 
-Route::middleware(['auth:api'])->prefix('contact')->group(function () {
-    Route::post('/request/create', [ ContactRequestController::class, 'createRequest']);
-    Route::get('/request/received', [ ContactRequestController::class, 'getReceivedContactRequest'])->where('id', "[0-9]+");
-    Route::get('/request/sent', [ ContactRequestController::class, 'getSentContactRequest']);
-    Route::post('/request/accept/{id}',  [ ContactRequestController::class, 'acceptContactRequest'])->where('id', "[0-9]+");
-    Route::post('/request/remove/{id}',  [ ContactRequestController::class, 'removeContactRequest'])->where('id', "[0-9]+");
-    Route::get('/list',  [ ContactController::class, 'index']);
+/***
+ *
+ * CONTACT REQUESTS ROUTES
+ *
+ */
+
+Route::get('/contact-requests', [ ContactRequestController::class, 'index']);
+
+Route::middleware(['auth:api'])->prefix('contact-request')->group(function () {
+    Route::post('/', [ ContactRequestController::class, 'store']);
+    Route::get('/received', [ ContactRequestController::class, 'getReceived']);
+    Route::get('/sent', [ ContactRequestController::class, 'getSentContactRequest']);
+    Route::post('/accept/{id}',  [ ContactRequestController::class, 'acceptContactRequest'])->where('id', "[0-9]+");
+    Route::post('/remove/{id}',  [ ContactRequestController::class, 'removeContactRequest'])->where('id', "[0-9]+");
 
 });
 
+/***
+ *
+ * CHATS ROUTES
+ *
+ */
 Route::middleware(['auth:api'])->prefix('chat')->group(function () {
-    Route::post('/create', [ ChatController::class, 'create']);
-    Route::post('/message/create', [ ChatController::class, 'createMessage']);
-    Route::get('/{id}/messages', [ ChatController::class, 'showMessagesByChat']);
+    Route::post('/', [ ChatController::class, 'store']);
     Route::post('/{id}', [ ChatController::class, 'get']);
-    Route::get('/list',  [ ChatController::class, 'showByUser']);
 });
 
+/***
+ *
+ * MESSAGES ROUTES
+ *
+ */
+Route::get('/messages', [ MessageController::class, 'index']);
 
-//Route::middleware('auth:api')->group( function () {
-//    Route::resource('posts', BookPostController::class);
-//});
+Route::middleware(['auth:api'])->prefix('message')->group(function () {
+    Route::post('/', [ MessageController::class, 'store']);
+    Route::get('/{id}', [ ChatController::class, 'get']);
+});
+
+/***
+ *
+ * MEDIAS ROUTES
+ *
+ */
+
+Route::middleware(['auth:api'])->prefix('media')->group(function () {
+    Route::post('/upload/image', [ImageController::class, 'savePostImages'])->name('api.post.image.upload');
+});
+

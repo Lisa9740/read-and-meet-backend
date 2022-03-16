@@ -34,7 +34,7 @@ class ImageController extends BaseController
             $count = $count + 1;
 
         }
-        echo "Upload Successfully";
+        return $this->sendResponse("ok");
     }
 
     public function getPostImage(Request $request, String $url)

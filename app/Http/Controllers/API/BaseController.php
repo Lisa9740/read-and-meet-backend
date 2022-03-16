@@ -12,7 +12,7 @@ class BaseController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function sendResponse($result)
+    public function sendResponse($result): \Illuminate\Http\JsonResponse
     {
         $response =  $result;
 

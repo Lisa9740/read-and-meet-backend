@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Resources\ContactRequestResource;
+use App\Http\Resources\MessageResource;
 use App\Models\Contact;
 use App\Models\ContactRequest;
+use App\Models\Message;
 use App\Models\User;
 use App\Models\UserHasContact;
 use Illuminate\Http\JsonResponse;
@@ -14,12 +17,19 @@ use Illuminate\Support\Facades\Validator;
 
 class ContactRequestController extends BaseController
 {
+
+    public function index(): JsonResponse
+    {
+        $messages = ContactRequest::all();
+        return $this->sendResponse(ContactRequestResource::collection($messages));
+    }
+
     /**
      * Store a newly created resource in storage.
      * @param Request $request
      * @return JsonResponse
      */
-    public function createRequest(Request $request): JsonResponse
+    public function store(Request $request): JsonResponse
     {
         $input = $request->all();
 
@@ -46,7 +56,7 @@ class ContactRequestController extends BaseController
      * Display a listing of contact request to user.
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getReceivedContactRequest(): \Illuminate\Http\JsonResponse
+    public function getReceived(): \Illuminate\Http\JsonResponse
     {
         $contactRequests = DB::table('contact_requests')
             ->where('to_user_id', 'LIKE', Auth::id())

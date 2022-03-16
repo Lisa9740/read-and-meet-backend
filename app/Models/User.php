@@ -51,12 +51,14 @@ class User extends Authenticatable
 
     public function posts(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasMany(Post::class);
+        return  $this->hasMany(Post::class,  'user_id');
     }
 
     public function profile(){
         return $this->hasOne(Profile::class, 'id', 'profile_id');
     }
+
+
 /*    public function contacts(): \Illuminate\Database\Eloquent\Relations\MorphToMany
     {
         return $this->morphToMany(Contact::class, 'contacts');
