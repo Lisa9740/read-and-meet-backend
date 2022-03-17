@@ -3,8 +3,10 @@
 use App\Http\Controllers\API\ChatController;
 use App\Http\Controllers\API\ContactController;
 use App\Http\Controllers\API\ContactRequestController;
+use App\Http\Controllers\API\DeviceTokenController;
 use App\Http\Controllers\API\ImageController;
 use App\Http\Controllers\API\MessageController;
+use App\Http\Controllers\API\NotificationController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\Auth\UserAuthController;
 use App\Http\Controllers\API\ProfileController;
@@ -54,6 +56,7 @@ Route::middleware(['auth:api'])->prefix('user')->group(function () {
     Route::get('/chats',  [ ChatController::class, 'showByUser']);
     Route::get('/messages',  [ MessageController::class, 'showByUser']);
     Route::get('/chat/{id}', [ MessageController::class, 'showMessagesByChat'])->where('id', "[0-9]+");
+    Route::get('/notifications', [NotificationController::class, 'show']);
 });
 
 /***
@@ -100,9 +103,9 @@ Route::middleware(['auth:api'])->group(function () {
 
 Route::middleware(['auth:api'])->prefix('profile')->group(function () {
     Route::get('/{id}', [ProfileController::class, 'show'])->where('id', "[0-9]+");
-    Route::put('/{id}', [ProfileController::class, 'edit'])->where('id', "[0-9]+"); // TODO : change to method post to update
-    Route::put('/visibility/{id}', [ProfileController::class, 'changeVisibility'])->where('id', "[0-9]+"); // TODO : change to method post to update
-    Route::put('/photo/{id}', [ProfileController::class, 'changePhoto'])->where('id', "[0-9]+"); // TODO : change to method post to update
+    Route::put('/{id}', [ProfileController::class, 'edit'])->where('id', "[0-9]+"); // TODO : change to method post to put
+    Route::put('/visibility/{id}', [ProfileController::class, 'changeVisibility'])->where('id', "[0-9]+"); // TODO : change to method post to put
+    Route::put('/photo/{id}', [ProfileController::class, 'changePhoto'])->where('id', "[0-9]+"); // TODO : change to method post to put
 });
 
 /***
@@ -150,7 +153,16 @@ Route::get('/messages', [ MessageController::class, 'index']);
 
 Route::middleware(['auth:api'])->prefix('message')->group(function () {
     Route::post('/', [ MessageController::class, 'store']);
-    Route::get('/{id}', [ ChatController::class, 'get']);
+});
+
+/***
+ *
+ * NOTIFICATIONS ROUTES
+ *
+ */
+
+Route::middleware(['auth:api'])->prefix('notification')->group(function () {
+    Route::post('/', [ NotificationController::class, 'store'])->name('api.notification.store');
 });
 
 /***
@@ -161,5 +173,17 @@ Route::middleware(['auth:api'])->prefix('message')->group(function () {
 
 Route::middleware(['auth:api'])->prefix('media')->group(function () {
     Route::post('/upload/image', [ImageController::class, 'savePostImages'])->name('api.post.image.upload');
+});
+
+
+/***
+ *
+ * DEVICES ROUTES
+ *
+ */
+
+Route::middleware(['auth:api'])->group(function () {
+    Route::post('/device', [DeviceTokenController::class, 'store'])->name('api.store.devices');
+    Route::get('/devices', [DeviceTokenController::class, 'index'])->name('api.get.devices');
 });
 
