@@ -82,6 +82,7 @@ class ChatController extends BaseController
         $chats = DB::table('chats')->where('participant_one', 'LIKE', Auth::id())->orWhere('participant_two','LIKE', Auth::id())->get();
         $participant1 = DB::table('users')->where('id', "LIKE", Auth::id())->get();
 
+
         $chatsInfo = [];
         foreach ($chats as $chat){
             if ($chat->participant_one != Auth::id()){
@@ -91,11 +92,12 @@ class ChatController extends BaseController
             }
 
             $participant2 = DB::table('users')->where('id', "LIKE", $searchedId)->get();
-
+            $messages = DB::table('messages')->where("chat_id", "LIKE", $chat->id)->get();
             $chatsInfo[] = [
                 'id'           => $chat->id,
                 'participant1' => $participant1,
                 'participant2' => $participant2,
+                'messages' => $messages
             ];
         }
 

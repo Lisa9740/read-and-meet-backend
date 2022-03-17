@@ -11,7 +11,10 @@ class Chat extends Model
     protected $table = 'chats';
     protected $fillable = ['participant_one', 'participant_two'];
 
-
+    public function messages(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Message::class, 'id', 'chat_id');
+    }
 }
 
 
