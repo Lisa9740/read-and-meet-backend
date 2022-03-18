@@ -30,6 +30,8 @@ class ImageController extends BaseController
                 'authorId' => Auth::id()
             ]);
 
+            $photo->move(public_path('images/photos'),  strval($filename));
+
             $file->save();
             $count = $count + 1;
 
