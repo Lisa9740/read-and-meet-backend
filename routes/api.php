@@ -52,6 +52,8 @@ Route::middleware(['auth:api'])->prefix('user')->group(function () {
     Route::post('/update/avatar', [UserController::class, 'updateAvatar']);
     Route::post('/update/password', [UserController::class, 'updatePassword']);
 
+    Route::put('profile/visibility', [ProfileController::class, 'changeVisibility']);
+
     Route::get('/contacts', [ContactController::class, 'show'])->where('id', "[0-9]+");
     Route::get('/chats',  [ ChatController::class, 'showByUser']);
     Route::get('/messages',  [ MessageController::class, 'showByUser']);
