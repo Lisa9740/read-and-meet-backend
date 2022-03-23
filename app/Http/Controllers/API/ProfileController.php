@@ -39,7 +39,7 @@ class ProfileController extends BaseController
         if (is_null($profile)) {
             return $this->sendError('Profil not found.');
         }
-        return $this->sendResponse(new ProfileResource($profile), 'Profile retrieved successfully.');
+        return $this->sendResponse(new ProfileResource($profile));
     }
 
 
@@ -70,7 +70,7 @@ class ProfileController extends BaseController
         $profile->is_visible = $input['is_visible'];
         $profile->save();
 
-        return $this->sendResponse(new ProfileResource($profile), 'Profile retrieved successfully.');
+        return $this->sendResponse(new ProfileResource($profile));
     }
 
     /**
@@ -79,7 +79,7 @@ class ProfileController extends BaseController
      * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function changeVisibility(int $id, Request $request)
+    public function changeVisibility(Request $request)
     {
         $input = $request->all();
 
@@ -92,11 +92,11 @@ class ProfileController extends BaseController
             return $this->sendError('Validation Error.', $validator->errors());
         }
 
-        $profile = Profile::find($id);
+        $profile = Profile::find(Auth::id());
         $profile->is_visible = $input['is_visible'];
         $profile->save();
 
-        return $this->sendResponse(new ProfileResource($profile), 'Profile retrieved successfully.');
+        return $this->sendResponse(new ProfileResource($profile));
     }
 
 
@@ -123,6 +123,6 @@ class ProfileController extends BaseController
         $profile->photo = $input['photo'];
         $profile->save();
 
-        return $this->sendResponse(new ProfileResource($profile), 'Profile retrieved successfully.');
+        return $this->sendResponse(new ProfileResource($profile));
     }
 }
