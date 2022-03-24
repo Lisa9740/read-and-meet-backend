@@ -25,7 +25,7 @@ class UserResource extends JsonResource
             'gender'       => $this->gender,
             'age'          => $this->age,
             'profile'      => $this->profile,
-            'posts'        => $this->posts,
+            'posts'        => new PostCollection($this->posts),
             'profile_id'   => $this->profile_id,
             'created_at'   => $this->created_at
 

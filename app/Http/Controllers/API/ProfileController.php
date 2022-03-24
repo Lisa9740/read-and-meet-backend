@@ -66,8 +66,6 @@ class ProfileController extends BaseController
         $profile = Profile::find($id);
         $profile->description = $input['description'];
         $profile->book_liked = $input['book_liked'];
-        $profile->photo = $input['photo'];
-        $profile->is_visible = $input['is_visible'];
         $profile->save();
 
         return $this->sendResponse(new ProfileResource($profile));
