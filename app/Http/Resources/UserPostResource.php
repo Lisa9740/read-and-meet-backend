@@ -19,6 +19,7 @@ class UserPostResource extends JsonResource
             'id'            => $this->id,
             'title'         => $this->title,
             'localisation'  => new LocalisationResource($this->localisation),
+            'books'         => new BookCollection($this->books),
             'description'   => $this->description,
             'is_visible'    => $this->is_visible,
             'created_at'    => $this->created_at->format('d/m/Y'),

@@ -18,9 +18,9 @@ class Post extends Model
         return $this->hasOne(User::class, 'id', 'user_id');
     }
 
-    public function book(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function books(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasMany(Book::class, 'id', 'post_id');
+        return $this->hasMany(Book::class, 'post_id', 'id');
     }
 
     public function localisation(): \Illuminate\Database\Eloquent\Relations\HasOne

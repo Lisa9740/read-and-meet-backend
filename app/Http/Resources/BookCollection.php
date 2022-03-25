@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class PostCollection extends ResourceCollection
+class BookCollection extends ResourceCollection
 {
 
     /**
@@ -15,6 +15,6 @@ class PostCollection extends ResourceCollection
      */
     public function toArray($request)
     {
-        return UserPostResource::collection($this->collection) ?? UserResource::collection($this->collection);
+        return BookResource::collection($this->collection);
     }
 }

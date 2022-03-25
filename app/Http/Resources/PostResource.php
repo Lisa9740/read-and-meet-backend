@@ -22,6 +22,7 @@ class PostResource extends JsonResource
             'localisation'  => new LocalisationResource($this->localisation),
             'description'   => $this->description,
             'is_visible'    => $this->is_visible,
+            'books'         => $this->books,
             'created_at'    => $this->created_at->format('d/m/Y'),
             'updated_at'    => $this->updated_at->format('d/m/Y'),
         ];

@@ -78,14 +78,14 @@ class PostController extends BaseController
      * @param int $id
      * @return JsonResponse
      */
-    public function update(Request $request, int $id): JsonResponse
+    public function updatePostInfo(Request $request, int $id): JsonResponse
     {
         $input = $request->all();
 
         $validator = Validator::make($input, [
             'title' => 'required',
             'description' => 'required',
-            'is_visible'     => $request->get('is_visible'),
+           // 'is_visible'     => $request->get('is_visible'),
         ]);
 
         if($validator->fails()){
@@ -95,7 +95,6 @@ class PostController extends BaseController
         $post  = Post::find($id);
         $post->title = $input['title'];
         $post->description = $input['description'];
-        $post->is_visible = 1;
         $post->user_id = Auth::id();
         $post->save();
 

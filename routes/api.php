@@ -73,7 +73,7 @@ Route::middleware(['auth:api'])->prefix('post')->group(function () {
     Route::get('/{id}', [PostController::class, 'show'])->where('id', "[0-9]+");
     Route::post('/', [PostController::class, 'store'])->name('api.create.post');
     Route::get('/image/{url}', [ImageController::class, 'getPostImage'])->name('api.post.image');
-    Route::post('/update/{id}', [PostController::class, 'update'])->name('api.post.update');
+    Route::put('/{id}', [PostController::class, 'updateInfo'])->name('api.post.update');
     Route::post('/delete/{id}', [PostController::class, 'destroy'])->name('api.post.delete');
 });
 
