@@ -1,4 +1,4 @@
-# ReadAndMeet Backend
+# ReadAndMeet API
     
 Ceci est la partie api du projet ReadAndMeet qui est faite en Lavarel.
 
