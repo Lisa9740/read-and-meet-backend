@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers\API\Auth;
 
-use App\Http\Resources\UserResource;
+use App\Http\Resources\User\UserResource;
+use App\Http\Resources\User\UserWithoutPostResource;
 use App\Models\Profile;
 use Error;
 use Illuminate\Http\Request;
@@ -36,6 +37,7 @@ class UserAuthController extends Controller
                 'password'      => bcrypt($request->password),
                 'profile_id'    => $profile->id,
                 'user_picture'  => $path
+
             ]);
 
             $token = $user->createToken('LaravelAuthApp')->accessToken;

@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\Collection\Post;
 
+use App\Http\Resources\Post\PostWithoutUserResource;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class PostWithBooksCollection extends ResourceCollection
+class PostWithoutUserCollection extends ResourceCollection
 {
 
     /**
@@ -15,6 +16,6 @@ class PostWithBooksCollection extends ResourceCollection
      */
     public function toArray($request)
     {
-        UserResource::collection($this->collection);
+        return PostWithoutUserResource::collection($this->collection);
     }
 }

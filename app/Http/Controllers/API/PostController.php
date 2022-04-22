@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Resources\Collection\Post\PostWithoutUserCollection;
+use App\Http\Resources\PostWithoutUserResource;
+//use App\Http\Resources\UserPostResource;
 use App\Models\Book;
 use App\Models\File;
 use App\Models\Localisation;
@@ -13,7 +16,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Resources\PostResource as PostResource;
+use App\Http\Resources\Post\PostResource as PostResource;
 
 class PostController extends BaseController
 {
@@ -38,7 +41,7 @@ class PostController extends BaseController
      * @param Request $request
      * @return JsonResponse
      */
-    public function store(Request $request): JsonResponse
+    public function create(Request $request): JsonResponse
     {
         $localisation = $this->createPostLocalisation($request);
         $localisation->save();
@@ -52,8 +55,6 @@ class PostController extends BaseController
 
         $post->save();
         $this->createBooks($request, $post->id);
-
-
 
         return $this->sendResponse(new PostResource($post));
     }
@@ -72,20 +73,33 @@ class PostController extends BaseController
         return $this->sendResponse(new PostResource($post));
     }
 
+
+    /**
+     * Display the specified resource.
+     *  @return JsonResponse
+     */
+    public function showPosts(): JsonResponse
+    {
+        $post = Post::where('user_id', '=', Auth::id())->get();
+        if (is_null($post)) {
+            return $this->sendError('Post not found.');
+        }
+        return $this->sendResponse(new PostWithoutUserCollection($post));
+    }
+
     /**
      * Update the specified resource in storage.
      * @param Request $request
      * @param int $id
      * @return JsonResponse
      */
-    public function updatePostInfo(Request $request, int $id): JsonResponse
+    public function update(Request $request, int $id): JsonResponse
     {
         $input = $request->all();
 
         $validator = Validator::make($input, [
             'title' => 'required',
             'description' => 'required',
-           // 'is_visible'     => $request->get('is_visible'),
         ]);
 
         if($validator->fails()){

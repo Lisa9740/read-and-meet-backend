@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Controllers\API\BaseController;
-use App\Http\Resources\UserResource;
+use App\Http\Resources\User\UserResource;
+use App\Http\Resources\User\UserWithoutPostResource;
 use App\Models\File;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -22,20 +22,20 @@ class UserController extends BaseController
     public function index(): \Illuminate\Http\JsonResponse
     {
         $users = User::all();
-        return $this->sendResponse(UserResource::collection($users), "Users retrieve successfully");
+        return $this->sendResponse(UserWithoutPostResource::collection($users));
     }
 
     /**
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show($id)
     {
         $user = User::find($id);
 
-        return $this->sendResponse(new UserResource($user), 'User retrieved successfully.');
+        return $this->sendResponse(new UserResource($user));
     }
 
     /**
@@ -129,7 +129,6 @@ class UserController extends BaseController
                     ]);
 
                     $file->save();
-
 
                     $extension      = $imageUploaded->getClientOriginalExtension();
                     $image          = time() . rand() . '.' . $extension;

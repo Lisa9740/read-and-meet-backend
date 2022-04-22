@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\Collection\Book;
 
+use App\Http\Resources\BookResource;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class BookCollection extends ResourceCollection

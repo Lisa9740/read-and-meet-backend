@@ -7,6 +7,7 @@ use App\Http\Controllers\API\DeviceTokenController;
 use App\Http\Controllers\API\ImageController;
 use App\Http\Controllers\API\MessageController;
 use App\Http\Controllers\API\NotificationController;
+use App\Http\Controllers\API\ProductController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\Auth\UserAuthController;
 use App\Http\Controllers\API\ProfileController;
@@ -35,7 +36,7 @@ Route::post('/connexion', [UserAuthController::class, 'login'])->name('login');
 Route::get('/authorization', [UserAuthController::class, 'verifyToken'])->name('authorization');
 Route::get('/logout', [UserAuthController::class, 'logout'])->middleware('auth:api')->name('api.logout');
 
-
+Route::get('/products', [ProductController::class, 'index']);
 
 /***
  *
@@ -55,6 +56,7 @@ Route::middleware(['auth:api'])->prefix('user')->group(function () {
     Route::put('profile/visibility', [ProfileController::class, 'changeVisibility']);
 
     Route::get('/contacts', [ContactController::class, 'show'])->where('id', "[0-9]+");
+    Route::get('/posts', [PostController::class, 'showPosts'])->where('id', "[0-9]+");
     Route::get('/chats',  [ ChatController::class, 'showByUser']);
     Route::get('/messages',  [ MessageController::class, 'showByUser']);
     Route::get('/chat/{id}', [ MessageController::class, 'showMessagesByChat'])->where('id', "[0-9]+");
@@ -70,11 +72,11 @@ Route::middleware(['auth:api'])->prefix('user')->group(function () {
 Route::get('/posts', [PostController::class, 'index'])->name('api.posts');
 
 Route::middleware(['auth:api'])->prefix('post')->group(function () {
+    Route::post('/', [PostController::class, 'create'])->name('api.post.create');
     Route::get('/{id}', [PostController::class, 'show'])->where('id', "[0-9]+");
-    Route::post('/', [PostController::class, 'store'])->name('api.create.post');
+    Route::put('/{id}', [PostController::class, 'update'])->name('api.post.update');
     Route::get('/image/{url}', [ImageController::class, 'getPostImage'])->name('api.post.image');
-    Route::put('/{id}', [PostController::class, 'updatePostInfo'])->name('api.post.update');
-    Route::post('/delete/{id}', [PostController::class, 'destroy'])->name('api.post.delete');
+    Route::delete('/delete/{id}', [PostController::class, 'destroy'])->name('api.post.delete');
 });
 
 
@@ -98,7 +100,7 @@ Route::middleware(['auth:api'])->prefix('book')->group(function () {
  * PROFILES ROUTES
  *
  */
-
+Route::get('/image/{url}', [ImageController::class, 'getPostImage'])->name('api.post.image');
 Route::middleware(['auth:api'])->group(function () {
     Route::get('/profiles', [ProfileController::class, 'index'])->name('api.profiles');
 });

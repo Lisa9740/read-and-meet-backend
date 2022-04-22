@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\Collection;
 
+use App\Http\Resources\BookResource;
+use App\Http\Resources\MessageResource;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class PostCollection extends ResourceCollection
+class MessageCollection extends ResourceCollection
 {
 
     /**
@@ -15,6 +17,6 @@ class PostCollection extends ResourceCollection
      */
     public function toArray($request)
     {
-        return UserPostResource::collection($this->collection) ?? UserResource::collection($this->collection);
+        return MessageResource::collection($this->collection);
     }
 }

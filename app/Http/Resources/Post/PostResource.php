@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\Post;
 
-use App\Models\Localisation;
+use App\Http\Resources\Collection\Book\BookCollection;
+use App\Http\Resources\LocalisationResource;
+use App\Http\Resources\User\UserWithoutPostResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class PostResource extends JsonResource
@@ -22,7 +24,7 @@ class PostResource extends JsonResource
             'localisation'  => new LocalisationResource($this->localisation),
             'description'   => $this->description,
             'is_visible'    => $this->is_visible,
-            'books'         => $this->books,
+            'books'         => new BookCollection($this->books),
             'created_at'    => $this->created_at->format('d/m/Y'),
             'updated_at'    => $this->updated_at->format('d/m/Y'),
         ];

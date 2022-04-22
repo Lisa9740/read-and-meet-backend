@@ -43,9 +43,9 @@ class NotificationController extends BaseController
      * @param int $id
      * @return JsonResponse
      */
-    public function show(int $id): JsonResponse
+    public function show(): JsonResponse
     {
-        $notification = Notification::find($id);
+        $notification = DB::table("notifications")->where('user_id', Auth::id())->get();
         if (is_null($notification)) {
             return $this->sendError('notification not found.');
         }

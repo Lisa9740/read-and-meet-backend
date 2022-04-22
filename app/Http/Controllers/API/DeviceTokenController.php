@@ -35,7 +35,8 @@ class DeviceTokenController extends BaseController
         $existingDevice = DB::table("device_tokens")->where("registration_token", $request->get('registration_token'))->get();
 
         if ($existingDevice->count() > 0){
-            return $this->sendResponse($existingDevice->first());
+
+            return $this->sendResponse($existingDevice->last());
         }else {
             $device = DeviceToken::create([
                 'registration_token' => $request->get('registration_token'),

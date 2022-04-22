@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\User;
 
+use App\Http\Resources\Collection\Post\PostWithoutUserCollection;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserResource extends JsonResource
@@ -25,7 +26,6 @@ class UserResource extends JsonResource
             'gender'       => $this->gender,
             'age'          => $this->age,
             'profile'      => $this->profile,
-            'posts'        => new PostCollection($this->posts),
             'profile_id'   => $this->profile_id
         ];
     }
