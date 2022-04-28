@@ -14,5 +14,10 @@ jobs:
           USERNAME: ${{ secrets.USERNAME }}
           PORT: ${{ secrets.PORT }}
           KEY: ${{ secrets.SSHKEY }}
-          script: cd /var/www/html/read-and-meet-backend && sudo git pull && php artisan passport:keys && php artisan passport:install &&  php artisan cache:clear && php artisan migrate
+          script: cd /var/www/html/read-and-meet-backend &&
+                  && php artisan migrate
+                  && sudo git pull && php artisan passport:keys
+                  && php artisan passport:install
+                  && php artisan cache:clear
+
 

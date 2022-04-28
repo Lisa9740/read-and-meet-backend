@@ -2,7 +2,7 @@
 
 namespace App\Http\Resources\User;
 
-use App\Http\Resources\Collection\Post\PostWithoutUserCollection;
+use App\Http\Resources\ProfileResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserResource extends JsonResource
@@ -25,7 +25,7 @@ class UserResource extends JsonResource
             'user_picture' => $this->user_picture,
             'gender'       => $this->gender,
             'age'          => $this->age,
-            'profile'      => $this->profile,
+            'profile'      => new ProfileResource($this->profile),
             'profile_id'   => $this->profile_id
         ];
     }

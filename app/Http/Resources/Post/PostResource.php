@@ -4,7 +4,7 @@ namespace App\Http\Resources\Post;
 
 use App\Http\Resources\Collection\Book\BookCollection;
 use App\Http\Resources\LocalisationResource;
-use App\Http\Resources\User\UserWithoutPostResource;
+use App\Http\Resources\User\UserResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class PostResource extends JsonResource
@@ -20,7 +20,7 @@ class PostResource extends JsonResource
         return [
             'id'            => $this->id,
             'title'         => $this->title,
-            'user'          => new UserWithoutPostResource($this->user),
+            'user'          => new UserResource($this->user),
             'localisation'  => new LocalisationResource($this->localisation),
             'description'   => $this->description,
             'is_visible'    => $this->is_visible,
