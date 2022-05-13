@@ -71,11 +71,12 @@ Route::middleware(['auth:api'])->prefix('user')->group(function () {
 
 Route::get('/posts', [PostController::class, 'index'])->name('api.posts');
 
+Route::get('/post/image/{url}', [ImageController::class, 'getPostImage'])->name('api.post.image');
+
 Route::middleware(['auth:api'])->prefix('post')->group(function () {
     Route::post('/', [PostController::class, 'create'])->name('api.post.create');
     Route::get('/{id}', [PostController::class, 'show'])->where('id', "[0-9]+");
     Route::put('/{id}', [PostController::class, 'update'])->name('api.post.update');
-    Route::get('/image/{url}', [ImageController::class, 'getPostImage'])->name('api.post.image');
     Route::delete('/delete/{id}', [PostController::class, 'destroy'])->name('api.post.delete');
 });
 
