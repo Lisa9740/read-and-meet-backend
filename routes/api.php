@@ -90,10 +90,10 @@ Route::middleware(['auth:api'])->prefix('post')->group(function () {
 Route::get('/books', [BookController::class, 'index'])->name('api.books');
 
 Route::get('/book/post/{id}', [BookController::class, 'showByPost'])->name('api.get.book.posts');
+Route::get('/{id}', [BookController::class, 'show'])->where('id', "[0-9]+");
 
 Route::middleware(['auth:api'])->prefix('book')->group(function () {
     Route::post('/', [BookController::class, 'store'])->name('api.book.store');
-    Route::get('/{id}', [BookController::class, 'show'])->where('id', "[0-9]+");
   });
 
 /***
